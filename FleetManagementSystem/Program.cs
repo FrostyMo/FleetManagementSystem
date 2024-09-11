@@ -1,18 +1,18 @@
-﻿using FleetManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.EntityFrameworkCore;
+using FleetManagementSystem.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-// Configure ApplicationDbContext with SQLite
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddMvc();
+//builder.Services.AddScoped<FleetManagementDbContext, FleetManagementDbContext>();
+// Add SQLite DB context for FleetManagementDbContext
+builder.Services.AddDbContext<FleetManagementDbContext>(options =>
+    options.UseSqlite("Data Source=FleetManagementSystem.db"));
 
 // Configure FleetManagementDbContext with SQLite
-builder.Services.AddDbContext<FleetManagementDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("FleetManagementConnection")));
+//builder.Services.AddDbContext<FleetManagementDbContext>(options =>
+//    options.UseSqlite(builder.Configuration.GetConnectionString("FleetManagementConnection")));
 
 var app = builder.Build();
 
@@ -33,7 +33,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}/{searchQuery?}");
 
 app.Run();
 

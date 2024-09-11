@@ -16,3 +16,25 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Highlight required input fields */
+input:required {
+    border-left: 3px solid #dc3545; /* Red border for required fields */
+}
+
+/* Styling for the validation message */
+.text-danger {
+    font-size: 0.9rem;
+    color: #dc3545;
+}
+
+/* Change input style when it is invalid */
+input:invalid {
+    border-left: 3px solid #dc3545; /* Red border when the field is invalid */
+}
+
+/* Required field asterisk color */
+label span.text-danger {
+    font-size: 1rem;
+    color: #dc3545; /* Red asterisk */
+}

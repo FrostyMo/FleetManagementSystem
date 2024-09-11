@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Drivers\" />
     <None Remove="Controllers\Drivers\" />
     <None Remove="Controllers\Vehicles\" />
     <None Remove="Controllers\Fuel\" />
@@ -21,9 +20,9 @@
     <None Remove="Data\" />
     <None Remove="Views\MaintenanceRecord\" />
     <None Remove="Views\TripRecord\" />
+    <None Remove="Views\Driver\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Drivers\" />
     <Folder Include="Controllers\Drivers\" />
     <Folder Include="Controllers\Vehicles\" />
     <Folder Include="Controllers\Fuel\" />
@@ -37,6 +36,7 @@
     <Folder Include="Data\" />
     <Folder Include="Views\MaintenanceRecord\" />
     <Folder Include="Views\TripRecord\" />
+    <Folder Include="Views\Driver\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />
@@ -52,5 +52,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
   </ItemGroup>
 </Project>

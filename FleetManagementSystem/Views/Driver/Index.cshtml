@@ -1,0 +1,35 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.Driver>
+
+<h2>Drivers</h2>
+<!-- Add New Driver Button -->
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-primary">Add New Driver</a>
+</div>
+<!-- Search Bar -->
+<div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search drivers..." style="width: 100%;" />
+</div>
+<!-- Table Container (This will be dynamically updated via AJAX) -->
+<div id="tableContainer">
+    @* The table will go inside this container *@
+    <partial name="_DriverTable" model="Model" />
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('input', function () {
+                var query = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("SearchDrivers", "Driver")',
+                    type: 'GET',
+                    data: { searchQuery: query },
+                    success: function (result) {
+                        $('#tableContainer').html(result); // Update the tableContainer with the new table
+                    }
+                });
+            });
+        });
+    </script>
+}

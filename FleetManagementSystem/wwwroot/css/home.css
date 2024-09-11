@@ -1,0 +1,75 @@
+﻿/* Make the entire card clickable */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+    /* Set a larger height for the cards */
+    .card-link .card {
+        height: 30vh; /* Increase this value to make the card taller */
+    }
+
+/* Fix hover animations */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    
+
+.card-link .card-body {
+/* Fading colors by reducing opacity */
+background-color: rgba(13, 110, 253, 0.8); /* Primary */
+}
+
+.card-link .card-body.bg-success {
+background-color: rgba(25, 135, 84, 0.8); /* Success */
+}
+
+.card-link .card-body.bg-info {
+background-color: rgba(13, 202, 240, 0.8); /* Info */
+}
+
+.card-link .card-body.bg-warning {
+background-color: rgba(255, 193, 7, 0.8); /* Warning */
+}
+
+.card-link .card-body.bg-danger {
+background-color: rgba(220, 53, 69, 0.8); /* Danger */
+}
+
+.card-link .card-body.bg-secondary {
+background-color: rgba(108, 117, 125, 0.8); /* Secondary */
+}
+
+/* Hover effect */
+    .card-link:hover {
+        transform: scale(1.05); /* Slight increase on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+    }
+
+.card-link:hover .card-body {
+background-color: rgba(13, 110, 253, 0.9); /* Slightly stronger color on hover */
+}
+
+.card-link:hover .card-body.bg-success {
+    background-color: rgba(25, 135, 84, 0.9);
+}
+
+.card-link:hover .card-body.bg-info {
+    background-color: rgba(13, 202, 240, 0.9);
+}
+
+.card-link:hover .card-body.bg-warning {
+    background-color: rgba(255, 193, 7, 0.9);
+}
+
+.card-link:hover .card-body.bg-danger {
+    background-color: rgba(220, 53, 69, 0.9);
+}
+
+.card-link:hover .card-body.bg-secondary {
+    background-color: rgba(108, 117, 125, 0.9);
+}

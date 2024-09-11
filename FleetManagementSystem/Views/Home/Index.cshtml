@@ -1,9 +1,80 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Fleet Management System";
 }
+<head>
+    <link rel="stylesheet" href="~/css/home.css" />
+</head>
+<div class="container mt-4">
+    <h1 class="display-4 text-center">Fleet Management System</h1>
+    <p class="lead text-center">Manage your fleet efficiently with the following modules:</p>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Driver")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-primary text-white">
+                        <h5 class="card-title">Drivers</h5>
+                        <p class="card-text">Manage your drivers: Add, update, or remove driver information.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Vehicle")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-success text-white">
+                        <h5 class="card-title">Vehicles</h5>
+                        <p class="card-text">Track vehicle details and service history.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "FuelCard")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-info text-white">
+                        <h5 class="card-title">Fuel Cards</h5>
+                        <p class="card-text">Manage your fleet's fuel cards.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Fine")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-warning text-dark">
+                        <h5 class="card-title">Fines</h5>
+                        <p class="card-text">Track and manage vehicle fines.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "ServiceHistory")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-danger text-white">
+                        <h5 class="card-title">Service History</h5>
+                        <p class="card-text">Monitor service history of your vehicles.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="@Url.Action("Index", "Insurance")" class="card-link">
+                <div class="card shadow-sm">
+                    <div class="card-body bg-secondary text-white">
+                        <h5 class="card-title">Insurance</h5>
+                        <p class="card-text">Manage insurance information for vehicles.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
-

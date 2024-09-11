@@ -1,0 +1,29 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>License Number</th>
+            <th>Date of Birth</th>
+            <th>License Expiry</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var driver in Model)
+        {
+            <tr>
+                <td>@driver.FirstName</td>
+                <td>@driver.LastName</td>
+                <td>@driver.LicenseNumber</td>
+                <td>@driver.DateOfBirth.ToShortDateString()</td>
+                <td>@driver.LicenseExpiry.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@driver.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@driver.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@driver.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

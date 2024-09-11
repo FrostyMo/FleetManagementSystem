@@ -1,0 +1,32 @@
+﻿@model FleetManagementSystem.Models.Driver
+
+<h2>Driver Details</h2>
+
+<div>
+    <h4>Driver</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">First Name</dt>
+        <dd class="col-sm-10">@Model.FirstName</dd>
+
+        <dt class="col-sm-2">Last Name</dt>
+        <dd class="col-sm-10">@Model.LastName</dd>
+
+        <dt class="col-sm-2">License Number</dt>
+        <dd class="col-sm-10">@Model.LicenseNumber</dd>
+
+        <dt class="col-sm-2">Date of Birth</dt>
+        <dd class="col-sm-10">@Model.DateOfBirth.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">License Expiry</dt>
+        <dd class="col-sm-10">@Model.LicenseExpiry.ToShortDateString()</dd>
+
+        <dt class="col-sm-2">Phone Number</dt>
+        <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+</div>
+
+<a href="@Url.Action("Index")" class="btn btn-primary">Back to List</a>
