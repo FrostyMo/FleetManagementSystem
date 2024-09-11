@@ -6,4 +6,51 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Views\Drivers\" />
+    <None Remove="Controllers\Drivers\" />
+    <None Remove="Controllers\Vehicles\" />
+    <None Remove="Controllers\Fuel\" />
+    <None Remove="Controllers\Reports\" />
+    <None Remove="Views\Vehicles\" />
+    <None Remove="Views\FuelCards\" />
+    <None Remove="Views\Insurance\" />
+    <None Remove="Views\Fines\" />
+    <None Remove="Views\ServiceHistory\" />
+    <None Remove="Views\Reports\" />
+    <None Remove="Data\" />
+    <None Remove="Views\MaintenanceRecord\" />
+    <None Remove="Views\TripRecord\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Drivers\" />
+    <Folder Include="Controllers\Drivers\" />
+    <Folder Include="Controllers\Vehicles\" />
+    <Folder Include="Controllers\Fuel\" />
+    <Folder Include="Controllers\Reports\" />
+    <Folder Include="Views\Vehicles\" />
+    <Folder Include="Views\FuelCards\" />
+    <Folder Include="Views\Insurance\" />
+    <Folder Include="Views\Fines\" />
+    <Folder Include="Views\ServiceHistory\" />
+    <Folder Include="Views\Reports\" />
+    <Folder Include="Data\" />
+    <Folder Include="Views\MaintenanceRecord\" />
+    <Folder Include="Views\TripRecord\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.33" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.33">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.33" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.33">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

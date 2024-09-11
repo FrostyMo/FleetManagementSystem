@@ -1,7 +1,18 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using FleetManagementSystem.Data;
+using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure ApplicationDbContext with SQLite
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure FleetManagementDbContext with SQLite
+builder.Services.AddDbContext<FleetManagementDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("FleetManagementConnection")));
 
 var app = builder.Build();
 
