@@ -11,32 +11,32 @@
     <None Remove="Controllers\Vehicles\" />
     <None Remove="Controllers\Fuel\" />
     <None Remove="Controllers\Reports\" />
-    <None Remove="Views\Vehicles\" />
     <None Remove="Views\FuelCards\" />
     <None Remove="Views\Insurance\" />
     <None Remove="Views\Fines\" />
-    <None Remove="Views\ServiceHistory\" />
     <None Remove="Views\Reports\" />
     <None Remove="Data\" />
     <None Remove="Views\MaintenanceRecord\" />
     <None Remove="Views\TripRecord\" />
     <None Remove="Views\Driver\" />
+    <None Remove="Views\Vehicle\" />
+    <None Remove="Views\ServiceHistory\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Drivers\" />
     <Folder Include="Controllers\Vehicles\" />
     <Folder Include="Controllers\Fuel\" />
     <Folder Include="Controllers\Reports\" />
-    <Folder Include="Views\Vehicles\" />
     <Folder Include="Views\FuelCards\" />
     <Folder Include="Views\Insurance\" />
     <Folder Include="Views\Fines\" />
-    <Folder Include="Views\ServiceHistory\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Data\" />
     <Folder Include="Views\MaintenanceRecord\" />
     <Folder Include="Views\TripRecord\" />
     <Folder Include="Views\Driver\" />
+    <Folder Include="Views\Vehicle\" />
+    <Folder Include="Views\ServiceHistory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />

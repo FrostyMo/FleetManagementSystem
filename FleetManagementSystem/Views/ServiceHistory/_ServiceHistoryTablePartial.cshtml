@@ -1,0 +1,30 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.ServiceHistory>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Cost (£)</th>
+            <th>Status</th>
+            <th>Vehicle</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var history in Model)
+        {
+            <tr>
+                <td>@history.Date.ToString("dd/MM/yyyy")</td>
+                <td>@history.Type</td>
+                <td>@history.Cost</td>
+                <td>@history.Status</td>
+                <td>@history.Vehicle.LicensePlate</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@history.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@history.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
