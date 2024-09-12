@@ -1,0 +1,32 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.Vehicle>
+
+@{
+    ViewData["Title"] = "Vehicles";
+}
+
+<h1>Vehicles</h1>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Add New Vehicle</a>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Search Vehicles by License Plate, Manufacturer, or Model" />
+
+<div id="vehicleTable">
+    <partial name="_VehicleTablePartial" model="Model" />
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('input', function () {
+                var query = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("Search", "Vehicle")',
+                    data: { searchString: query },
+                    success: function (result) {
+                        $('#vehicleTable').html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}
