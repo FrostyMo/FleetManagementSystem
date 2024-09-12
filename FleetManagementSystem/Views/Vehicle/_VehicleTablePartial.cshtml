@@ -1,0 +1,64 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.Vehicle>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>License Plate</th>
+            <th>Manufacturer</th>
+            <th>Vehicle</th>
+            <th>Registration Expiry</th>
+            <th>MOT</th> <!-- New -->
+            <th>Tax Status</th> <!-- New -->
+            <th>Assigned Driver</th> <!-- New -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.LicensePlate</td>
+                <td>@vehicle.Manufacturer</td>
+                <td>@vehicle.Model @vehicle.Year @vehicle.Color</td>
+                <td>@vehicle.RegistrationExpiry.ToString("yyyy-MM-dd")</td>
+
+                <!-- MOT file link -->
+                <td>
+                    @if (!string.IsNullOrEmpty(vehicle.MOTFilePath))
+                    {
+                        <a href="@vehicle.MOTFilePath" target="_blank">
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <span>No MOT</span>
+                    }
+                </td>
+
+                <!-- Tax Paid/Unpaid -->
+                <td>@(vehicle.IsTaxPaid ? "Paid" : "Unpaid")</td>
+
+                <!-- Assigned Driver -->
+                <td>
+                    @if (vehicle.Driver != null)
+                    {
+                        <a asp-action="Details" asp-controller="Driver" asp-route-id="@vehicle.Driver.Id">
+                            @vehicle.Driver.FirstName @vehicle.Driver.LastName
+                        </a>
+                    }
+                    else
+                    {
+                        <span>Unassigned</span>
+                    }
+                </td>
+
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@vehicle.Id">Edit</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@vehicle.Id">Delete</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@vehicle.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,3 +1,28 @@
-﻿@{
-}
+﻿@model IEnumerable<FleetManagementSystem.Models.ServiceHistory>
 
+<h1>Service Histories</h1>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Add New Service History</a>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by Vehicle License Plate or Type" />
+
+<div id="serviceHistoryTable">
+    <partial name="_ServiceHistoryTablePartial" model="Model" />
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('input', function () {
+                var query = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("Search", "ServiceHistory")',
+                    data: { searchString: query },
+                    success: function (result) {
+                        $('#serviceHistoryTable').html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}

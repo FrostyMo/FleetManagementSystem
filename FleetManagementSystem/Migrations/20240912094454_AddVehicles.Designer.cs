@@ -3,6 +3,7 @@ using System;
 using FleetManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FleetManagementSystem.Migrations
 {
     [DbContext(typeof(FleetManagementDbContext))]
-    partial class FleetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240912094454_AddVehicles")]
+    partial class AddVehicles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.33");
@@ -54,36 +56,6 @@ namespace FleetManagementSystem.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("FleetManagementSystem.Models.ServiceHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("ServiceHistories");
-                });
-
             modelBuilder.Entity("FleetManagementSystem.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -94,17 +66,8 @@ namespace FleetManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("DriverId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsTaxPaid")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("LicensePlate")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MOTFilePath")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Manufacturer")
@@ -127,34 +90,7 @@ namespace FleetManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
-
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("FleetManagementSystem.Models.ServiceHistory", b =>
-                {
-                    b.HasOne("FleetManagementSystem.Models.Vehicle", "Vehicle")
-                        .WithMany("ServiceHistories")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Vehicle");
-                });
-
-            modelBuilder.Entity("FleetManagementSystem.Models.Vehicle", b =>
-                {
-                    b.HasOne("FleetManagementSystem.Models.Driver", "Driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId");
-
-                    b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("FleetManagementSystem.Models.Vehicle", b =>
-                {
-                    b.Navigation("ServiceHistories");
                 });
 #pragma warning restore 612, 618
         }

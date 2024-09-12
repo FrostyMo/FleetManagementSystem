@@ -1,0 +1,69 @@
+﻿@model FleetManagementSystem.Models.Vehicle
+
+@{
+    ViewData["Title"] = "Create Vehicle";
+}
+
+<h1>Create Vehicle</h1>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="LicensePlate" class="control-label"></label>
+        <input asp-for="LicensePlate" class="form-control" />
+        <span asp-validation-for="LicensePlate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Manufacturer" class="control-label"></label>
+        <input asp-for="Manufacturer" class="form-control" />
+        <span asp-validation-for="Manufacturer" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Model" class="control-label"></label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <input asp-for="Year" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Color" class="control-label"></label>
+        <input asp-for="Color" class="form-control" />
+        <span asp-validation-for="Color" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VIN" class="control-label"></label>
+        <input asp-for="VIN" class="form-control" />
+        <span asp-validation-for="VIN" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RegistrationExpiry" class="control-label"></label>
+        <input asp-for="RegistrationExpiry" class="form-control" type="date" />
+        <span asp-validation-for="RegistrationExpiry" class="text-danger"></span>
+    </div>
+    <!-- MOT Upload (PDF) -->
+    <div class="form-group">
+        <label asp-for="MOTFilePath">MOT (PDF)</label>
+        <input asp-for="MOTFilePath" type="file" class="form-control" name="MOTFile" />
+    </div>
+
+    <!-- Tax Paid/Unpaid -->
+    <div class="form-group">
+        <label asp-for="IsTaxPaid" class="control-label">Tax Status</label>
+        <select asp-for="IsTaxPaid" class="form-control">
+            <option value="true">Paid</option>
+            <option value="false">Unpaid</option>
+        </select>
+        <span asp-validation-for="IsTaxPaid" class="text-danger"></span>
+    </div>
+
+    <!-- Driver Dropdown (Assign Driver) -->
+    <div class="form-group">
+        <label asp-for="DriverId" class="control-label">Assigned Driver</label>
+        <select asp-for="DriverId" class="form-control" asp-items="ViewBag.DriverList"></select>
+        <span asp-validation-for="DriverId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
