@@ -4,6 +4,7 @@ using FleetManagementSystem.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FleetManagementSystem.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FleetManagementSystem.Controllers
 {
@@ -17,11 +18,15 @@ namespace FleetManagementSystem.Controllers
         }
 
         // GET: Driver/Index
-        public async Task<IActionResult> Index(string searchQuery)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.Drivers.ToListAsync());
+            var drivers = _context.Drivers.AsQueryable();
+            var paginatedResult = await drivers.GetPagedAsync(page, pageSize);
+
+            return View(paginatedResult);
+            //return View(await _context.Drivers.ToListAsync());
         }
-        public async Task<IActionResult> SearchDrivers(string searchQuery)
+        public async Task<IActionResult> SearchDrivers(string searchQuery, int page = 1, int pageSize = 10)
         {
             var drivers = from d in _context.Drivers
                           select d;
@@ -33,9 +38,11 @@ namespace FleetManagementSystem.Controllers
                                              s.LastName.ToLower().Contains(searchQuery.ToLower()) ||
                                              s.LicenseNumber.ToLower().Contains(searchQuery.ToLower()));
             }
+            var paginatedResult = await drivers.GetPagedAsync(page, pageSize);
 
+            return PartialView("_DriverTable", paginatedResult);
             // Return the partial view with the filtered drivers
-            return PartialView("_DriverTable", await drivers.ToListAsync());
+            //return PartialView("_DriverTable", await drivers.ToListAsync());
         }
 
         // GET: Driver/Create

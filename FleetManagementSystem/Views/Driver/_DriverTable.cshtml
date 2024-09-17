@@ -1,4 +1,5 @@
-﻿<table class="table table-striped">
+﻿@model PagedResult<FleetManagementSystem.Models.Driver>
+<table class="table table-striped">
     <thead>
         <tr>
             <th>First Name</th>
@@ -10,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var driver in Model)
+        @foreach (var driver in Model.Items)
         {
             <tr>
                 <td>@driver.FirstName</td>
@@ -27,3 +28,17 @@
         }
     </tbody>
 </table>
+<!-- Pagination Controls -->
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

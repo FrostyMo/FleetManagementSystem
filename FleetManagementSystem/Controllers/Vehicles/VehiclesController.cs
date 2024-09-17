@@ -15,17 +15,19 @@ namespace FleetManagementSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
             var vehicles = _context.Vehicles
                            .Include(v => v.Driver) // Eagerly load the Driver object
                            .AsQueryable();
+            var paginatedResult = await vehicles.GetPagedAsync(page, pageSize);
 
-            return View(await vehicles.ToListAsync());
+            //return View(await vehicles.ToListAsync());
+            return View(paginatedResult);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string searchString)
+        public async Task<IActionResult> Search(string searchString, int page = 1, int pageSize = 10)
         {
             var vehicles = _context.Vehicles
                            .Include(v => v.Driver) // Eagerly load the Driver object
@@ -37,8 +39,11 @@ namespace FleetManagementSystem.Controllers
                                                 v.Manufacturer.ToLower().StartsWith(searchString) ||
                                                 v.Model.ToLower().StartsWith(searchString));
             }
+            var paginatedResult = await vehicles.GetPagedAsync(page, pageSize);
 
-            return PartialView("_VehicleTablePartial", await vehicles.ToListAsync());
+            return PartialView("_VehicleTablePartial", paginatedResult);
+
+            //return PartialView("_VehicleTablePartial", await vehicles.ToListAsync());
         }
 
         //public IActionResult Create()
@@ -90,22 +95,41 @@ namespace FleetManagementSystem.Controllers
         }
 
         // GET: Vehicle/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int page = 1, int pageSize = 3)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
+            //var vehicle = await _context.Vehicles
+            //                    .Include(v => v.Driver) // Eagerly load the Driver object
+            //                    .Include(v => v.ServiceHistories) // Eagerly load the ServiceHistories
+            //                    .FirstOrDefaultAsync(m => m.Id == id);
+            //if (vehicle == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //return View(vehicle);
             var vehicle = await _context.Vehicles
-                                .Include(v => v.Driver) // Eagerly load the Driver object
-                                .Include(v => v.ServiceHistories) // Eagerly load the ServiceHistories
-                                .FirstOrDefaultAsync(m => m.Id == id);
+                               .Include(v => v.Driver) // Eagerly load the Driver object
+                               .FirstOrDefaultAsync(m => m.Id == id);
+
             if (vehicle == null)
             {
                 return NotFound();
             }
 
+            // Fetch the related service histories for this vehicle and apply pagination
+            var serviceHistoriesQuery = _context.ServiceHistories
+                                                .Where(sh => sh.VehicleId == id)
+                                                .OrderBy(sh => sh.Date) // Order by date or any other field
+                                                .AsQueryable();
+
+            var paginatedHistories = await serviceHistoriesQuery.GetPagedAsync(page, pageSize); // PagedResult
+
+            ViewBag.ServiceHistories = paginatedHistories; // Pass the paginated result
             return View(vehicle);
         }
 

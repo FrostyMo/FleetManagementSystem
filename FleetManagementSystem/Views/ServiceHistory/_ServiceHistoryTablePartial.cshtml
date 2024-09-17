@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FleetManagementSystem.Models.ServiceHistory>
+﻿@model PagedResult<FleetManagementSystem.Models.ServiceHistory>
 
 <table class="table table-striped">
     <thead>
@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var history in Model)
+        @foreach (var history in Model.Items)
         {
             <tr>
                 <td>@history.Date.ToString("dd/MM/yyyy")</td>
@@ -29,7 +29,7 @@
                         <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@history.Vehicle.Id">
                             @history.Vehicle.LicensePlate
                         </a>
-                        
+
                     }
                 </td>
                 <td>
@@ -40,3 +40,18 @@
         }
     </tbody>
 </table>
+
+<!-- Pagination Controls -->
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

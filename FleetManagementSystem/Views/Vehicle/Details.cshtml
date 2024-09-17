@@ -37,6 +37,7 @@
                 <th>Type</th>
                 <th>Cost</th>
                 <th>Status</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -49,9 +50,51 @@
                         <td>@history.Type</td>
                         <td>@history.Cost</td>
                         <td>@history.Status</td>
+                        <td>
+                            <!-- Kebab Menu -->
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="kebabMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i> <!-- Font Awesome for kebab menu -->
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="kebabMenu">
+                                    <li>
+                                        <a class="dropdown-item" asp-action="Edit" asp-controller="ServiceHistory" asp-route-id="@history.Id">Edit Details</a>
+                                    </li>
+                                    <li>
+                                        @* Status Toggle Based on Current Status *@
+                                        @if (history.Status == "Pending")
+                                        {
+                                            <form method="post" asp-action="UpdateStatusToReimbursed" asp-controller="ServiceHistory" asp-route-id="@history.Id">
+                                                <button type="submit" class="dropdown-item">Update Status to Reimbursed</button>
+                                            </form>
+                                        }
+                                        else if (history.Status == "Reimbursed")
+                                        {
+                                            <form method="post" asp-action="UpdateStatusToPending" asp-controller="ServiceHistory" asp-route-id="@history.Id">
+                                                <button type="submit" class="dropdown-item">Update Status to Pending</button>
+                                            </form>
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+    <!-- Pagination Controls -->
+    @if (ViewBag.ServiceHistories.TotalPages > 1)
+    {
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= ViewBag.ServiceHistories.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.ServiceHistories.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+    }
 </div>

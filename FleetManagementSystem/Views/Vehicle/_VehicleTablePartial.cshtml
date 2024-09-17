@@ -1,4 +1,4 @@
-﻿@model IEnumerable<FleetManagementSystem.Models.Vehicle>
+﻿@model PagedResult<FleetManagementSystem.Models.Vehicle>
 
 <table class="table">
     <thead>
@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var vehicle in Model)
+        @foreach (var vehicle in Model.Items)
         {
             <tr>
                 <td>@vehicle.LicensePlate</td>
@@ -62,3 +62,17 @@
         }
     </tbody>
 </table>
+<!-- Pagination Controls -->
+@if (Model.TotalPages > 1)
+{
+<nav>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
+}
