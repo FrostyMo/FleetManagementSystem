@@ -7,7 +7,7 @@
 <h1>Vehicle Details</h1>
 
 <div>
-    <h4>Vehicle</h4>
+    @*<h4>Vehicle</h4>*@
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
     <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     <hr />
@@ -47,7 +47,7 @@
                     <tr>
                         <td>@history.Date.ToString("dd/MM/yyyy")</td>
                         <td>@history.Type</td>
-                        <td>@history.Cost.ToString("C")</td>
+                        <td>@history.Cost</td>
                         <td>@history.Status</td>
                     </tr>
                 }

@@ -13,7 +13,7 @@ public class ServiceHistoryController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index(string searchString)
+    public async Task<IActionResult> Index()
     {
         var histories = _context.ServiceHistories.
                         Include(h => h.Vehicle).
@@ -28,9 +28,10 @@ public class ServiceHistoryController : Controller
                         Include(h => h.Vehicle).
                         AsQueryable();
 
-        searchString = searchString.ToLower();
+        
         if (!string.IsNullOrEmpty(searchString))
         {
+            searchString = searchString.ToLower();
             histories = histories.Where(v => v.Type.ToLower().StartsWith(searchString) ||
                                             v.Vehicle.LicensePlate.ToLower().StartsWith(searchString)
                                             );
