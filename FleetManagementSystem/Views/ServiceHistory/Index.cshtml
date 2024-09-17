@@ -17,6 +17,7 @@
                 var query = $(this).val();
                 $.ajax({
                     url: '@Url.Action("Search", "ServiceHistory")',
+                    type: 'GET',
                     data: { searchString: query },
                     success: function (result) {
                         $('#serviceHistoryTable').html(result);
