@@ -43,3 +43,12 @@ label span.text-danger {
     font-size: 1rem;
     color: #dc3545; /* Red asterisk */
 }
+
+/* Kebab menu alignment */
+.dropdown-menu {
+    min-width: auto;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
