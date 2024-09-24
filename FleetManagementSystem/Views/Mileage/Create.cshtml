@@ -1,0 +1,31 @@
+﻿@model FleetManagementSystem.Models.Mileage
+
+<h1>Add Mileage</h1>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Date" class="control-label"></label>
+        <input asp-for="Date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TotalMileage" class="control-label"></label>
+        <input asp-for="TotalMileage" class="form-control" />
+        <span asp-validation-for="TotalMileage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProofFilePath">Proof (Image)</label>
+        <input asp-for="ProofFilePath" type="file" class="form-control" name="ProofFile" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="VehicleId" class="control-label">Select Vehicle</label>
+        <select asp-for="VehicleId" class="form-control" asp-items="ViewBag.VehicleList"></select>
+        <span asp-validation-for="VehicleId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@ViewBag.VehicleId" class="btn btn-secondary">Cancel</a>
+</form>

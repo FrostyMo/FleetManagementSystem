@@ -102,16 +102,6 @@ namespace FleetManagementSystem.Controllers
                 return NotFound();
             }
 
-            //var vehicle = await _context.Vehicles
-            //                    .Include(v => v.Driver) // Eagerly load the Driver object
-            //                    .Include(v => v.ServiceHistories) // Eagerly load the ServiceHistories
-            //                    .FirstOrDefaultAsync(m => m.Id == id);
-            //if (vehicle == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(vehicle);
             var vehicle = await _context.Vehicles
                                .Include(v => v.Driver) // Eagerly load the Driver object
                                .FirstOrDefaultAsync(m => m.Id == id);
@@ -129,7 +119,16 @@ namespace FleetManagementSystem.Controllers
 
             var paginatedHistories = await serviceHistoriesQuery.GetPagedAsync(page, pageSize); // PagedResult
 
+            // Fetch the related service histories for this vehicle and apply pagination
+            var mileagesQuery = _context.Mileages
+                                                .Where(sh => sh.VehicleId == id)
+                                                .OrderBy(sh => sh.Date) // Order by date or any other field
+                                                .AsQueryable();
+
+            var paginatedMileages = await mileagesQuery.GetPagedAsync(page, pageSize); // PagedResult
+
             ViewBag.ServiceHistories = paginatedHistories; // Pass the paginated result
+            ViewBag.Mileages = paginatedMileages;
             return View(vehicle);
         }
 

@@ -20,5 +20,7 @@
 
         // Navigation property for the assigned driver
         public ICollection<ServiceHistory>? ServiceHistories { get; set; } // Add this line
+
+        public ICollection<Mileage> Mileages { get; set; } // Add this for Mileage tracking
     }
 }
