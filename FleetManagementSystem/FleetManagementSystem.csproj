@@ -21,6 +21,7 @@
     <None Remove="Views\Driver\" />
     <None Remove="Views\Vehicle\" />
     <None Remove="Views\ServiceHistory\" />
+    <None Remove="Views\Mileage\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Drivers\" />
@@ -38,6 +39,7 @@
     <Folder Include="Views\Vehicle\" />
     <Folder Include="Views\ServiceHistory\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="Views\Mileage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />

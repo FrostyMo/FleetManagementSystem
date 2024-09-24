@@ -28,7 +28,7 @@
         <dd class="col-sm-10">@Model.RegistrationExpiry.ToString("yyyy-MM-dd")</dd>
     </dl>
 </div>
-<div>
+<div class="mb-4">
     <h3>Service History</h3>
     <table class="table">
         <thead>
@@ -96,5 +96,56 @@
             }
         </ul>
     </nav>
+    }
+</div>
+<div class="mb-4">
+    <h3>Mileage History</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Total Mileage</th>
+                <th>Proof</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (@Model.Mileages != null)
+                {
+                @foreach (var mileage in @Model.Mileages)
+                    {
+
+                        <tr>
+                            <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@mileage.TotalMileage</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+                                    {
+                                    <span>Missing</span>
+                                    }
+                                    else
+                                    {
+                                    <a href="@mileage.ProofFilePath" target="_blank">
+                                        <i class="fas fa-image"></i> <!-- Image icon for proof -->
+                                    </a>
+                                    }
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+    </table>
+    <!-- Pagination Controls -->
+    @if (ViewBag.Mileages.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                @for (var i = 1; i <= ViewBag.Mileages.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.Mileages.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-page="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
     }
 </div>

@@ -1,0 +1,54 @@
+﻿@model PagedResult<FleetManagementSystem.Models.Mileage>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Total Mileage</th>
+            <th>Vehicle</th>
+            <th>Proof</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mileage in Model.Items)
+        {
+            <tr>
+                <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
+                <td>@mileage.TotalMileage</td>
+                <td>@mileage.Vehicle.LicensePlate</td>
+                <td>
+                    @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+                    {
+                        <span>Missing</span>
+                    }
+                    else
+                    {
+                        <a href="@mileage.ProofFilePath" target="_blank">
+                            <i class="fas fa-image"></i> <!-- Image icon -->
+                        </a>
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@mileage.Id">Edit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@mileage.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination Controls -->
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
