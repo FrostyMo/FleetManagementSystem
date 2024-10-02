@@ -22,6 +22,7 @@ namespace FleetManagementSystem.Controllers
             AsQueryable();
 
             var paginatedResult = await mileages.GetPagedAsync(page, pageSize);
+            paginatedResult.Action = "Index";
             return View(paginatedResult);
         }
 
@@ -41,7 +42,7 @@ namespace FleetManagementSystem.Controllers
                                                 );
             }
             var paginatedResult = await mileages.GetPagedAsync(page, pageSize);
-
+            paginatedResult.Action = "Index";
             return PartialView("_MileageTablePartial", paginatedResult);
 
             //return PartialView("_ServiceHistoryTablePartial", await histories.ToListAsync());
@@ -57,7 +58,7 @@ namespace FleetManagementSystem.Controllers
         // Create POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Mileage mileage, IFormFile proofFile)
+        public async Task<IActionResult> Create(Mileage mileage, IFormFile? proofFile)
         {
             if (ModelState.IsValid)
             {
@@ -119,7 +120,7 @@ namespace FleetManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Mileage mileage, IFormFile proofFile)
+        public async Task<IActionResult> Edit(int id, Mileage mileage, IFormFile? proofFile)
         {
             if (id != mileage.Id)
             {
@@ -208,7 +209,7 @@ namespace FleetManagementSystem.Controllers
             var mileage = await _context.Mileages.FindAsync(id);
             _context.Mileages.Remove(mileage);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Vehicle", new { id = mileage.VehicleId });
+            return RedirectToAction(nameof(Index));
         }
     }
 }

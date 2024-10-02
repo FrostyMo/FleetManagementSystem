@@ -1,78 +1,91 @@
 ﻿@model PagedResult<FleetManagementSystem.Models.Vehicle>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>License Plate</th>
-            <th>Manufacturer</th>
-            <th>Vehicle</th>
-            <th>Registration Expiry</th>
-            <th>MOT</th> <!-- New -->
-            <th>Tax Status</th> <!-- New -->
-            <th>Assigned Driver</th> <!-- New -->
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var vehicle in Model.Items)
-        {
-            <tr>
-                <td>@vehicle.LicensePlate</td>
-                <td>@vehicle.Manufacturer</td>
-                <td>@vehicle.Model @vehicle.Year @vehicle.Color</td>
-                <td>@vehicle.RegistrationExpiry.ToString("yyyy-MM-dd")</td>
-
-                <!-- MOT file link -->
-                <td>
-                    @if (!string.IsNullOrEmpty(vehicle.MOTFilePath))
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Vehicles Management</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>License Plate</th>
+                        <th>Manufacturer</th>
+                        <th>Vehicle</th>
+                        <th>Registration Expiry</th>
+                        <th>MOT</th> <!-- New -->
+                        <th>Tax Status</th> <!-- New -->
+                        <th>Assigned Driver</th> <!-- New -->
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var vehicle in Model.Items)
                     {
-                        <a href="@vehicle.MOTFilePath" target="_blank">
-                            <i class="fas fa-file-pdf"></i>
-                        </a>
-                    }
-                    else
-                    {
-                        <span>No MOT</span>
-                    }
-                </td>
+                        <tr>
+                            <td>@vehicle.LicensePlate</td>
+                            <td>@vehicle.Manufacturer</td>
+                            <td>@vehicle.Model @vehicle.Year @vehicle.Color</td>
+                            <td>@vehicle.RegistrationExpiry.ToString("yyyy-MM-dd")</td>
 
-                <!-- Tax Paid/Unpaid -->
-                <td>@(vehicle.IsTaxPaid ? "Paid" : "Unpaid")</td>
+                            <!-- MOT file link -->
+                            <td>
+                                @if (!string.IsNullOrEmpty(vehicle.MOTFilePath))
+                                {
+                                    <a href="@vehicle.MOTFilePath" target="_blank" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-file-pdf"></i> View
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">No MOT</span>
+                                }
+                            </td>
 
-                <!-- Assigned Driver -->
-                <td>
-                    @if (vehicle.Driver != null)
-                    {
-                        <a asp-action="Details" asp-controller="Driver" asp-route-id="@vehicle.Driver.Id">
-                            @vehicle.Driver.FirstName @vehicle.Driver.LastName
-                        </a>
-                    }
-                    else
-                    {
-                        <span>Unassigned</span>
-                    }
-                </td>
+                            <!-- Tax Paid/Unpaid -->
+                            <td>
+                                <span class="badge @(vehicle.IsTaxPaid ? "bg-success" : "bg-danger")">
+                                    @(vehicle.IsTaxPaid ? "Paid" : "Unpaid")
+                                </span>
+                            </td>
 
-                <td>
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@vehicle.Id">Details</a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@vehicle.Id">Edit</a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@vehicle.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<!-- Pagination Controls -->
-@if (Model.TotalPages > 1)
-{
-<nav>
-    <ul class="pagination">
-        @for (var i = 1; i <= Model.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
-            </li>
-        }
-    </ul>
-</nav>
-}
+                            <!-- Assigned Driver -->
+                            <td>
+                                @if (vehicle.Driver != null)
+                                {
+                                    <a asp-action="Details" asp-controller="Driver" asp-route-id="@vehicle.Driver.Id" class="text-primary" target="_blank">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                    <span>@vehicle.Driver.FirstName @vehicle.Driver.LastName</span>
+
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Unassigned</span>
+                                }
+                            </td>
+
+                            <!-- Actions -->
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-sm btn-outline-info" asp-action="Details" asp-route-id="@vehicle.Id">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-warning" asp-action="Edit" asp-route-id="@vehicle.Id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@vehicle.Id">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        @await Html.PartialAsync("_Pagination", Model)
+    </div>
+</div>

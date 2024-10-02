@@ -13,7 +13,6 @@
     <None Remove="Controllers\Reports\" />
     <None Remove="Views\FuelCards\" />
     <None Remove="Views\Insurance\" />
-    <None Remove="Views\Fines\" />
     <None Remove="Views\Reports\" />
     <None Remove="Data\" />
     <None Remove="Views\MaintenanceRecord\" />
@@ -22,6 +21,7 @@
     <None Remove="Views\Vehicle\" />
     <None Remove="Views\ServiceHistory\" />
     <None Remove="Views\Mileage\" />
+    <None Remove="Views\Fine\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Drivers\" />
@@ -30,7 +30,6 @@
     <Folder Include="Controllers\Reports\" />
     <Folder Include="Views\FuelCards\" />
     <Folder Include="Views\Insurance\" />
-    <Folder Include="Views\Fines\" />
     <Folder Include="Views\Reports\" />
     <Folder Include="Data\" />
     <Folder Include="Views\MaintenanceRecord\" />
@@ -40,6 +39,7 @@
     <Folder Include="Views\ServiceHistory\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="Views\Mileage\" />
+    <Folder Include="Views\Fine\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />

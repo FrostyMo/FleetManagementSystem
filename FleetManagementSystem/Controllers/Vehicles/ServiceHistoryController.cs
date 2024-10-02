@@ -21,6 +21,7 @@ public class ServiceHistoryController : Controller
         AsQueryable();
 
         var paginatedResult = await histories.GetPagedAsync(page, pageSize);
+        paginatedResult.Action = "Index";
         //return View(await histories.ToListAsync());
         return View(paginatedResult);
     }
@@ -41,7 +42,7 @@ public class ServiceHistoryController : Controller
                                             );
         }
         var paginatedResult = await histories.GetPagedAsync(page, pageSize);
-
+        paginatedResult.Action = "Index";
         return PartialView("_ServiceHistoryTablePartial", paginatedResult);
 
         //return PartialView("_ServiceHistoryTablePartial", await histories.ToListAsync());
@@ -139,7 +140,9 @@ public class ServiceHistoryController : Controller
             return NotFound();
         }
 
-        var serviceHistory = await _context.ServiceHistories.FirstOrDefaultAsync(m => m.Id == id);
+        var serviceHistory = await _context.ServiceHistories
+                                       .Include(sh => sh.Vehicle) // Eagerly load the associated Vehicle
+                                       .FirstOrDefaultAsync(m => m.Id == id);
         if (serviceHistory == null)
         {
             return NotFound();
