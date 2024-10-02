@@ -17,32 +17,59 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+    .card-link .card-body.card-body-color-1 {
+        background-color: rgb(201, 104, 104, 0.8);
+    }
+
+    .card-link .card-body.card-body-color-2 {
+        background-color: rgb(250, 223, 161, 0.8);
+    }
+
+    .card-link .card-body.card-body-color-3 {
+        background-color: rgb(255, 244, 234, 0.8);
+    }
+
+    .card-link .card-body.card-body-color-4 {
+        background-color: rgb(126, 172, 181, 0.8);
+    }
+
+    .card-link .card-body.card-body-color-5 {
+        background-color: rgb(163, 191, 168, 0.8); /* Example similar color */
+    }
+
+    .card-link .card-body.card-body-color-6 {
+        background-color: rgb(216, 180, 160, 0.8); /* Example similar color */
+    }
+
+    .card-link .card-body.card-body-color-7 {
+        background-color: rgb(246, 214, 201, 0.8); /* Example similar color */
+    }
     
 
-.card-link .card-body {
+/*.card-link .card-body {*/
 /* Fading colors by reducing opacity */
-background-color: rgba(13, 110, 253, 0.8); /* Primary */
-}
+/*background-color: rgba(13, 110, 253, 0.8);*/ /* Primary */
+/*}
 
 .card-link .card-body.bg-success {
-background-color: rgba(25, 135, 84, 0.8); /* Success */
-}
+background-color: rgba(25, 135, 84, 0.8);*/ /* Success */
+/*}
 
 .card-link .card-body.bg-info {
-background-color: rgba(13, 202, 240, 0.8); /* Info */
-}
+background-color: rgba(13, 202, 240, 0.8);*/ /* Info */
+/*}
 
 .card-link .card-body.bg-warning {
-background-color: rgba(255, 193, 7, 0.8); /* Warning */
-}
+background-color: rgba(255, 193, 7, 0.8);*/ /* Warning */
+/*}
 
 .card-link .card-body.bg-danger {
-background-color: rgba(220, 53, 69, 0.8); /* Danger */
-}
+background-color: rgba(220, 53, 69, 0.8);*/ /* Danger */
+/*}
 
 .card-link .card-body.bg-secondary {
-background-color: rgba(108, 117, 125, 0.8); /* Secondary */
-}
+background-color: rgba(108, 117, 125, 0.8);*/ /* Secondary */
+/*}*/
 
 /* Hover effect */
     .card-link:hover {
@@ -50,26 +77,30 @@ background-color: rgba(108, 117, 125, 0.8); /* Secondary */
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
     }
 
-.card-link:hover .card-body {
-background-color: rgba(13, 110, 253, 0.9); /* Slightly stronger color on hover */
-}
+        .card-link:hover .card-body.card-body-color-1 {
+            background-color: rgb(201, 104, 104);
+        }
 
-.card-link:hover .card-body.bg-success {
-    background-color: rgba(25, 135, 84, 0.9);
-}
+    .card-link:hover .card-body.card-body-color-2 {
+        background-color: rgb(250, 223, 161);
+    }
 
-.card-link:hover .card-body.bg-info {
-    background-color: rgba(13, 202, 240, 0.9);
-}
+    .card-link:hover .card-body.card-body-color-3 {
+        background-color: rgb(255, 244, 234);
+    }
 
-.card-link:hover .card-body.bg-warning {
-    background-color: rgba(255, 193, 7, 0.9);
-}
+    .card-link:hover .card-body.card-body-color-4 {
+        background-color: rgb(126, 172, 181);
+    }
 
-.card-link:hover .card-body.bg-danger {
-    background-color: rgba(220, 53, 69, 0.9);
-}
+    .card-link:hover .card-body.card-body-color-5 {
+        background-color: rgb(163, 191, 168); /* Example similar color */
+    }
 
-.card-link:hover .card-body.bg-secondary {
-    background-color: rgba(108, 117, 125, 0.9);
-}
+    .card-link:hover .card-body.card-body-color-6 {
+        background-color: rgb(216, 180, 160); /* Example similar color */
+    }
+
+    .card-link:hover .card-body.card-body-color-7 {
+        background-color: #F6D6C9; /* Example similar color */
+    }
