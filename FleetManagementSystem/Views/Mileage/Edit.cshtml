@@ -1,0 +1,51 @@
+﻿@model FleetManagementSystem.Models.Mileage
+
+<div class="card shadow-sm">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Edit Mileage</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Date" class="form-label">Date</label>
+                    <input asp-for="Date" class="form-control" type="date" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="TotalMileage" class="form-label">Total Mileage</label>
+                    <input asp-for="TotalMileage" class="form-control" />
+                    <span asp-validation-for="TotalMileage" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProofFilePath" class="form-label">Proof (Image)</label>
+
+                @if (!string.IsNullOrEmpty(Model.ProofFilePath))
+                {
+                    <div>
+                        <a href="@Url.Content(Model.ProofFilePath)" target="_blank">
+                            <i class="fas fa-image"></i> View existing Picture
+                        </a>
+                    </div>
+                }
+
+                <input asp-for="ProofFilePath" type="file" class="form-control" name="ProofFile" />
+                <span class="text-muted">Leave empty if you don't want to replace the current proof.</span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="VehicleId" class="form-label">Select Vehicle</label>
+                <select asp-for="VehicleId" class="form-select" asp-items="ViewBag.VehicleList"></select>
+                <span asp-validation-for="VehicleId" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn table-header text-white">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

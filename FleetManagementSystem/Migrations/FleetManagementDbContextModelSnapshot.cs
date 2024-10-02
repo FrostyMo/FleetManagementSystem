@@ -54,6 +54,66 @@ namespace FleetManagementSystem.Migrations
                     b.ToTable("Drivers");
                 });
 
+            modelBuilder.Entity("FleetManagementSystem.Models.Fine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateIssued")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FineReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProofOfPaymentPath")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("Fines");
+                });
+
+            modelBuilder.Entity("FleetManagementSystem.Models.Mileage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProofFilePath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TotalMileage")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Mileages");
+                });
+
             modelBuilder.Entity("FleetManagementSystem.Models.ServiceHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -132,6 +192,28 @@ namespace FleetManagementSystem.Migrations
                     b.ToTable("Vehicles");
                 });
 
+            modelBuilder.Entity("FleetManagementSystem.Models.Fine", b =>
+                {
+                    b.HasOne("FleetManagementSystem.Models.Driver", "Driver")
+                        .WithMany("Fines")
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+                });
+
+            modelBuilder.Entity("FleetManagementSystem.Models.Mileage", b =>
+                {
+                    b.HasOne("FleetManagementSystem.Models.Vehicle", "Vehicle")
+                        .WithMany("Mileages")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
             modelBuilder.Entity("FleetManagementSystem.Models.ServiceHistory", b =>
                 {
                     b.HasOne("FleetManagementSystem.Models.Vehicle", "Vehicle")
@@ -152,8 +234,15 @@ namespace FleetManagementSystem.Migrations
                     b.Navigation("Driver");
                 });
 
+            modelBuilder.Entity("FleetManagementSystem.Models.Driver", b =>
+                {
+                    b.Navigation("Fines");
+                });
+
             modelBuilder.Entity("FleetManagementSystem.Models.Vehicle", b =>
                 {
+                    b.Navigation("Mileages");
+
                     b.Navigation("ServiceHistories");
                 });
 #pragma warning restore 612, 618

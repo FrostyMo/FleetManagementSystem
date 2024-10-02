@@ -4,6 +4,7 @@ using FleetManagementSystem.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using FleetManagementSystem.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FleetManagementSystem.Controllers
 {
@@ -17,11 +18,15 @@ namespace FleetManagementSystem.Controllers
         }
 
         // GET: Driver/Index
-        public async Task<IActionResult> Index(string searchQuery)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 1)
         {
-            return View(await _context.Drivers.ToListAsync());
+            var drivers = _context.Drivers.AsQueryable();
+            var paginatedResult = await drivers.GetPagedAsync(page, pageSize);
+            paginatedResult.Action = "Index";  // Specify the action name here
+            return View(paginatedResult);
+            //return View(await _context.Drivers.ToListAsync());
         }
-        public async Task<IActionResult> SearchDrivers(string searchQuery)
+        public async Task<IActionResult> SearchDrivers(string searchQuery, int page = 1, int pageSize = 10)
         {
             var drivers = from d in _context.Drivers
                           select d;
@@ -33,9 +38,12 @@ namespace FleetManagementSystem.Controllers
                                              s.LastName.ToLower().Contains(searchQuery.ToLower()) ||
                                              s.LicenseNumber.ToLower().Contains(searchQuery.ToLower()));
             }
+            var paginatedResult = await drivers.GetPagedAsync(page, pageSize);
+            paginatedResult.Action = "Index";
 
+            return PartialView("_DriverTable", paginatedResult);
             // Return the partial view with the filtered drivers
-            return PartialView("_DriverTable", await drivers.ToListAsync());
+            //return PartialView("_DriverTable", await drivers.ToListAsync());
         }
 
         // GET: Driver/Create
@@ -108,7 +116,7 @@ namespace FleetManagementSystem.Controllers
         }
 
         // GET: Driver/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int page = 1, int pageSize = 3)
         {
             if (id == null)
             {
@@ -117,10 +125,21 @@ namespace FleetManagementSystem.Controllers
 
             var driver = await _context.Drivers
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (driver == null)
             {
                 return NotFound();
             }
+
+            // Fetch the fines for this driver and apply pagination
+            var finesQuery = _context.Fines
+                                    .Where(f => f.DriverId == id)
+                                    .OrderBy(f => f.DateIssued)
+                                    .AsQueryable();
+
+            var paginatedFines = await finesQuery.GetPagedAsync(page, pageSize); // PagedResult
+            paginatedFines.Action = "Details";
+            ViewBag.Fines = paginatedFines; // Pass the paginated fines to the view
 
             return View(driver);
         }
@@ -140,6 +159,14 @@ namespace FleetManagementSystem.Controllers
                 return NotFound();
             }
 
+            // Check if the driver has any associated fines
+            var hasFines = await _context.Fines.AnyAsync(f => f.DriverId == driver.Id);
+
+            if (hasFines)
+            {
+                ViewBag.ErrorMessage = "This driver has fines associated with them. You must delete the fines before deleting the driver.";
+            }
+
             return View(driver);
         }
 
@@ -157,6 +184,27 @@ namespace FleetManagementSystem.Controllers
         private bool DriverExists(int id)
         {
             return _context.Drivers.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatusToPaid(int id)
+        {
+            var fine = await _context.Fines.FindAsync(id);
+            if (fine == null){return NotFound();}
+
+            // Check if there's proof of payment before allowing status change to "Paid"
+            if (string.IsNullOrEmpty(fine.ProofOfPaymentPath))
+            {
+                TempData["ErrorMessage"] = "Cannot mark fine as paid without proof of payment.";
+                return RedirectToAction(nameof(Details), new { id = fine.DriverId });
+            }
+
+            // Toggle the status (Paid or Pending)
+            fine.IsPaid = !fine.IsPaid;
+            _context.Update(fine);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = fine.DriverId });
         }
     }
 }

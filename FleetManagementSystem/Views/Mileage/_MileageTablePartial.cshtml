@@ -1,0 +1,62 @@
+﻿@model PagedResult<FleetManagementSystem.Models.Mileage>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Mileage Records</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Mileage</th>
+                        <th>Vehicle</th>
+                        <th>Proof</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mileage in Model.Items)
+                    {
+                        <tr>
+                            <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@mileage.TotalMileage</td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@mileage.Vehicle.Id" class="text-primary">
+                                    @mileage.Vehicle.LicensePlate
+                                    <i class="fas fa-external-link-alt"></i> <!-- External link icon -->
+                                </a>
+                            </td>
+                            <td>
+                                @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+                                {
+                                    <span class="text-danger">Missing</span>
+                                }
+                                else
+                                {
+                                    <a href="@mileage.ProofFilePath" target="_blank" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-image"></i> View
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-sm btn-outline-warning" asp-action="Edit" asp-route-id="@mileage.Id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@mileage.Id">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        @await Html.PartialAsync("_Pagination", Model)
+    </div>
+</div>

@@ -15,17 +15,19 @@ namespace FleetManagementSystem.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
             var vehicles = _context.Vehicles
                            .Include(v => v.Driver) // Eagerly load the Driver object
                            .AsQueryable();
-
-            return View(await vehicles.ToListAsync());
+            var paginatedResult = await vehicles.GetPagedAsync(page, pageSize);
+            paginatedResult.Action = "Index";
+            //return View(await vehicles.ToListAsync());
+            return View(paginatedResult);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Search(string searchString)
+        public async Task<IActionResult> Search(string searchString, int page = 1, int pageSize = 10)
         {
             var vehicles = _context.Vehicles
                            .Include(v => v.Driver) // Eagerly load the Driver object
@@ -37,8 +39,11 @@ namespace FleetManagementSystem.Controllers
                                                 v.Manufacturer.ToLower().StartsWith(searchString) ||
                                                 v.Model.ToLower().StartsWith(searchString));
             }
+            var paginatedResult = await vehicles.GetPagedAsync(page, pageSize);
+            paginatedResult.Action = "Index";
+            return PartialView("_VehicleTablePartial", paginatedResult);
 
-            return PartialView("_VehicleTablePartial", await vehicles.ToListAsync());
+            //return PartialView("_VehicleTablePartial", await vehicles.ToListAsync());
         }
 
         //public IActionResult Create()
@@ -89,8 +94,7 @@ namespace FleetManagementSystem.Controllers
             return View(vehicle);
         }
 
-        // GET: Vehicle/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int serviceHistoryPage = 1, int mileagePage = 1, int pageSize = 3)
         {
             if (id == null)
             {
@@ -98,14 +102,37 @@ namespace FleetManagementSystem.Controllers
             }
 
             var vehicle = await _context.Vehicles
-                                .Include(v => v.Driver) // Eagerly load the Driver object
-                                .Include(v => v.ServiceHistories) // Eagerly load the ServiceHistories
-                                .FirstOrDefaultAsync(m => m.Id == id);
+                                       .Include(v => v.Driver) // Eagerly load the Driver object
+                                       .FirstOrDefaultAsync(m => m.Id == id);
+
             if (vehicle == null)
             {
                 return NotFound();
             }
 
+            // Fetch the related service histories for this vehicle and apply pagination
+            var serviceHistoriesQuery = _context.ServiceHistories
+                                                .Where(sh => sh.VehicleId == id)
+                                                .OrderBy(sh => sh.Date); // Order by date
+
+            var paginatedHistories = await serviceHistoriesQuery.GetPagedAsync(serviceHistoryPage, pageSize); // PagedResult for Service Histories
+            paginatedHistories.Action = "Details";
+            //paginatedHistories.PageParameter = "serviceHistoryPage"; // Set the custom page parameter
+
+            // Fetch the related mileages for this vehicle and apply pagination
+            var mileagesQuery = _context.Mileages
+                                        .Where(m => m.VehicleId == id)
+                                        .OrderBy(m => m.Date); // Order by date
+
+            var paginatedMileages = await mileagesQuery.GetPagedAsync(mileagePage, pageSize); // PagedResult for Mileages
+            paginatedMileages.Action = "Details";
+            //paginatedMileages.PageParameter = "mileagePage"; // Set the custom page parameter
+
+            // Store the pagination results in ViewBag
+            ViewBag.ServiceHistories = paginatedHistories;
+            ViewBag.Mileages = paginatedMileages;
+
+            // Return the vehicle along with the ViewBag pagination data
             return View(vehicle);
         }
 
@@ -131,9 +158,14 @@ namespace FleetManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Vehicle vehicle, IFormFile MOTFile)
+        public async Task<IActionResult> Edit(int id, Vehicle vehicle, IFormFile? MOTFile)
         {
             if (id != vehicle.Id)
+            {
+                return NotFound();
+            }
+            var existingVehicle = await _context.Vehicles.FindAsync(id);
+            if (existingVehicle == null)
             {
                 return NotFound();
             }
@@ -162,12 +194,12 @@ namespace FleetManagementSystem.Controllers
                     else
                     {
                         // Do not overwrite MOTFilePath if no new file is uploaded
-                        _context.Entry(vehicle).Property(v => v.MOTFilePath).IsModified = false;
+                        vehicle.MOTFilePath = existingVehicle.MOTFilePath;
                     }
 
                     // DriverId is already being assigned through model binding, no need to re-assign Driver object.
-
-                    _context.Update(vehicle);
+                    // Update the rest of the fine details
+                    _context.Entry(existingVehicle).CurrentValues.SetValues(vehicle);
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction(nameof(Index));
@@ -196,7 +228,14 @@ namespace FleetManagementSystem.Controllers
 
             var vehicle = await _context.Vehicles.FirstOrDefaultAsync(m => m.Id == id);
             if (vehicle == null) return NotFound();
+            // Check if any service histories or mileages are associated with the vehicle
+            var hasServiceHistories = await _context.ServiceHistories.AnyAsync(sh => sh.VehicleId == vehicle.Id);
+            var hasMileages = await _context.Mileages.AnyAsync(m => m.VehicleId == vehicle.Id);
 
+            if (hasServiceHistories || hasMileages)
+            {
+                ViewBag.ErrorMessage = "This vehicle has associated service histories or mileages. Delete them before deleting the vehicle.";
+            }
             return View(vehicle);
         }
 
@@ -226,5 +265,35 @@ namespace FleetManagementSystem.Controllers
         {
             return _context.Vehicles.Any(e => e.Id == id);
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> ServiceHistoryPage(int vehicleId, int serviceHistoryPage = 1, int pageSize = 3)
+        {
+            var serviceHistoriesQuery = _context.ServiceHistories
+                                                .Where(sh => sh.VehicleId == vehicleId)
+                                                .OrderBy(sh => sh.Date)
+                                                .AsQueryable();
+
+            var paginatedHistories = await serviceHistoriesQuery.GetPagedAsync(serviceHistoryPage, pageSize);
+            ViewBag.VehicleId = vehicleId; // Pass vehicle ID to route the pagination correctly
+
+            return PartialView("_DetailsPartialServiceHistory", paginatedHistories);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MileagePage(int vehicleId, int mileagePage = 1, int pageSize = 3)
+        {
+            var mileagesQuery = _context.Mileages
+                                        .Where(m => m.VehicleId == vehicleId)
+                                        .OrderBy(m => m.Date)
+                                        .AsQueryable();
+
+            var paginatedMileages = await mileagesQuery.GetPagedAsync(mileagePage, pageSize);
+            ViewBag.VehicleId = vehicleId; // Pass vehicle ID to route the pagination correctly
+
+            return PartialView("_DetailsPartialMileage", paginatedMileages);
+        }
+
     }
 }

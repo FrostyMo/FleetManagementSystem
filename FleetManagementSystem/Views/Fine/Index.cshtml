@@ -1,0 +1,29 @@
+﻿@model PagedResult<FleetManagementSystem.Models.Fine>
+
+<h1>Fines</h1>
+
+<a class="btn table-header mb-3" asp-action="Create">Add New Fine</a>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by Fine Reference Number or Driver" />
+
+<div id="fineTable">
+    <partial name="_FineTablePartial" model="Model" />
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('input', function () {
+                var query = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("Search", "Fine")',
+                    type: 'GET',
+                    data: { searchString: query },
+                    success: function (result) {
+                        $('#fineTable').html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -4,54 +4,177 @@
     ViewData["Title"] = "Vehicle Details";
 }
 
-<h1>Vehicle Details</h1>
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Vehicle Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">License Plate</dt>
+            <dd class="col-sm-9">@Model.LicensePlate</dd>
 
-<div>
-    <h4>Vehicle</h4>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">License Plate</dt>
-        <dd class="col-sm-10">@Model.LicensePlate</dd>
-        <dt class="col-sm-2">Manufacturer</dt>
-        <dd class="col-sm-10">@Model.Manufacturer</dd>
-        <dt class="col-sm-2">Model</dt>
-        <dd class="col-sm-10">@Model.Model</dd>
-        <dt class="col-sm-2">Year</dt>
-        <dd class="col-sm-10">@Model.Year</dd>
-        <dt class="col-sm-2">Color</dt>
-        <dd class="col-sm-10">@Model.Color</dd>
-        <dt class="col-sm-2">VIN</dt>
-        <dd class="col-sm-10">@Model.VIN</dd>
-        <dt class="col-sm-2">Registration Expiry</dt>
-        <dd class="col-sm-10">@Model.RegistrationExpiry.ToString("yyyy-MM-dd")</dd>
-    </dl>
+            <dt class="col-sm-3">Manufacturer</dt>
+            <dd class="col-sm-9">@Model.Manufacturer</dd>
+
+            <dt class="col-sm-3">Model</dt>
+            <dd class="col-sm-9">@Model.Model</dd>
+
+            <dt class="col-sm-3">Year</dt>
+            <dd class="col-sm-9">@Model.Year</dd>
+
+            <dt class="col-sm-3">Color</dt>
+            <dd class="col-sm-9">@Model.Color</dd>
+
+            <dt class="col-sm-3">VIN</dt>
+            <dd class="col-sm-9">@Model.VIN</dd>
+
+            <dt class="col-sm-3">Registration Expiry</dt>
+            <dd class="col-sm-9">@Model.RegistrationExpiry.ToString("yyyy-MM-dd")</dd>
+        </dl>
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm table-header text-white">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Index" class="btn btn-sm btn-secondary">Back to List</a>
+        </div>
+    </div>
 </div>
-<div>
-    <h3>Service History</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Cost</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (@Model.ServiceHistories != null)
-            {
-                @foreach (var history in @Model.ServiceHistories)
-                {
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Service History</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td>@history.Date.ToString("dd/MM/yyyy")</td>
-                        <td>@history.Type</td>
-                        <td>@history.Cost.ToString("C")</td>
-                        <td>@history.Status</td>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Cost</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (Model.ServiceHistories != null)
+                    {
+                        @foreach (var history in Model.ServiceHistories)
+                        {
+                            <tr>
+                                <td>@history.Date.ToString("dd/MM/yyyy")</td>
+                                <td>@history.Type</td>
+                                <td>@history.Cost.ToString()</td>
+                                <td>@history.Status</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-controller="ServiceHistory" asp-route-id="@history.Id">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        @if (history.Status == "Pending")
+                                        {
+                                            <form method="post" asp-action="UpdateStatusToReimbursed" asp-controller="ServiceHistory" asp-route-id="@history.Id" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm btn-outline-success">Mark as Reimbursed</button>
+                                            </form>
+                                        }
+                                        else if (history.Status == "Reimbursed")
+                                        {
+                                            <form method="post" asp-action="UpdateStatusToPending" asp-controller="ServiceHistory" asp-route-id="@history.Id" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm btn-outline-warning">Mark as Pending</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- PAGINATION FOR SERVICE HISTORY -->
+        @if (ViewBag.ServiceHistories.TotalPages > 1)
+        {
+            <nav class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <!-- Previous Button -->
+                    <li class="page-item @(ViewBag.ServiceHistories.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@(ViewBag.ServiceHistories.CurrentPage - 1)" asp-route-mileagePage="@(ViewBag.Mileages.CurrentPage)">Previous</a>
+                    </li>
+                    @for (var i = 1; i <= ViewBag.ServiceHistories.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.ServiceHistories.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@i" asp-route-mileagePage="@(ViewBag.Mileages.CurrentPage)">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.ServiceHistories.CurrentPage == ViewBag.ServiceHistories.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@(ViewBag.ServiceHistories.CurrentPage + 1)" asp-route-mileagePage="@(ViewBag.Mileages.CurrentPage)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Mileage History</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Mileage</th>
+                        <th>Proof</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Mileages != null)
+                    {
+                        @foreach (var mileage in Model.Mileages)
+                        {
+                            <tr>
+                                <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
+                                <td>@mileage.TotalMileage</td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+                                    {
+                                        <span class="text-danger">Missing</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@mileage.ProofFilePath" target="_blank" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-image"></i> View Proof
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- PAGINATION FOR SERVICE HISTORY -->
+        @if (ViewBag.Mileages.TotalPages > 1)
+        {
+            <nav class="mt-3">
+                <ul class="pagination justify-content-center">
+                    <!-- Previous Button -->
+                    <li class="page-item @(ViewBag.Mileages.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@(ViewBag.Mileages.CurrentPage - 1)" asp-route-mileagePage="@(ViewBag.ServiceHistories.CurrentPage)">Previous</a>
+                    </li>
+                    @for (var i = 1; i <= ViewBag.Mileages.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.Mileages.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@i" asp-route-mileagePage="@(ViewBag.ServiceHistories.CurrentPage)">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(ViewBag.Mileages.CurrentPage == ViewBag.Mileages.TotalPages ? "disabled" : "")">
+                        <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-serviceHistoryPage="@(ViewBag.Mileages.CurrentPage + 1)" asp-route-mileagePage="@(ViewBag.ServiceHistories.CurrentPage)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
 </div>

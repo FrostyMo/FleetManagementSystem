@@ -1,32 +1,127 @@
 ﻿@model FleetManagementSystem.Models.Driver
 
-<h2>Driver Details</h2>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
-<div>
-    <h4>Driver</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">First Name</dt>
-        <dd class="col-sm-10">@Model.FirstName</dd>
+<div class="container mt-4">
+    <h2 class="mb-3">Driver Details</h2>
 
-        <dt class="col-sm-2">Last Name</dt>
-        <dd class="col-sm-10">@Model.LastName</dd>
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header text-white">
+            <h4 class="mb-0">Driver Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>First Name:</strong> @Model.FirstName</p>
+                    <p><strong>Last Name:</strong> @Model.LastName</p>
+                    <p><strong>License Number:</strong> @Model.LicenseNumber</p>
+                    <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</p>
+                    <p><strong>License Expiry:</strong> @Model.LicenseExpiry.ToShortDateString()</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <dt class="col-sm-2">License Number</dt>
-        <dd class="col-sm-10">@Model.LicenseNumber</dd>
+    <!-- Fines Table -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header-2 text-white">
+            <h4 class="mb-0">Fines</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Fine Reference #</th>
+                        <th>Date Issued</th>
+                        <th>Due Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Proof of Payment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ViewBag.Fines != null)
+                    {
+                        @foreach (var fine in ViewBag.Fines.Items)
+                        {
+                            <tr>
+                                <td>@fine.FineReferenceNumber</td>
+                                <td>@fine.DateIssued.ToString("dd/MM/yyyy")</td>
+                                <td>@fine.DueDate.ToString("dd/MM/yyyy")</td>
+                                <td>@fine.Amount.ToString()</td>
+                                <td>@(fine.IsPaid ? "Paid" : "Pending")</td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(fine.ProofOfPaymentPath))
+                                    {
+                                        <span>Missing</span>
+                                    }
+                                    else
+                                    {
+                                        <a href="@fine.ProofOfPaymentPath" target="_blank">
+                                            <i class="fas fa-file-pdf"></i> View
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    <!-- Kebab Menu -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-link dropdown-toggle" type="button" id="kebabMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="kebabMenu">
+                                            <li>
+                                                <a class="dropdown-item" asp-action="Edit" asp-controller="Fine" asp-route-id="@fine.Id">Edit Fine</a>
+                                            </li>
+                                            <li>
+                                                @if (!fine.IsPaid)
+                                                {
+                                                    <form method="post" asp-action="UpdateStatusToPaid" asp-controller="Driver" asp-route-id="@fine.Id">
+                                                        <button type="submit" class="dropdown-item">Update Status to Paid</button>
+                                                    </form>
+                                                }
+                                                else if (fine.IsPaid)
+                                                {
+                                                    <form method="post" asp-action="UpdateStatusToPaid" asp-controller="Driver" asp-route-id="@fine.Id">
+                                                        <button type="submit" class="dropdown-item">Mark as Pending</button>
+                                                    </form>
+                                                }
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <!-- Pagination Controls -->
+            @if (ViewBag.Fines.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        @for (var i = 1; i <= ViewBag.Fines.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.Fines.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-action="Details" asp-route-id="@Model.Id" asp-route-page="@i">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
+    </div>
 
-        <dt class="col-sm-2">Date of Birth</dt>
-        <dd class="col-sm-10">@Model.DateOfBirth.ToShortDateString()</dd>
-
-        <dt class="col-sm-2">License Expiry</dt>
-        <dd class="col-sm-10">@Model.LicenseExpiry.ToShortDateString()</dd>
-
-        <dt class="col-sm-2">Phone Number</dt>
-        <dd class="col-sm-10">@Model.PhoneNumber</dd>
-
-        <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.Email</dd>
-    </dl>
+    <div class="text-end">
+        <a href="@Url.Action("Index", "Driver")" class="btn btn-secondary">Back to List</a>
+    </div>
 </div>
-
-<a href="@Url.Action("Index")" class="btn btn-primary">Back to List</a>
