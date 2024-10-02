@@ -1,0 +1,90 @@
+﻿@model FleetManagementSystem.Models.Fine
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Add Fine</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="FineReferenceNumber" class="form-label"></label>
+                    <input asp-for="FineReferenceNumber" class="form-control" placeholder="Enter Fine Reference #" />
+                    <span asp-validation-for="FineReferenceNumber" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="form-control" placeholder="Enter Fine Amount" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="DateIssued" class="form-label"></label>
+                    <input asp-for="DateIssued" class="form-control" type="date" />
+                    <span asp-validation-for="DateIssued" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DueDate" class="form-label"></label>
+                    <input asp-for="DueDate" class="form-control" type="date" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="IsPaid" class="form-label">Fine Status</label>
+                    <select asp-for="IsPaid" class="form-select" id="statusDropdown" disabled>
+                        <option value="false">Pending</option>
+                        <option value="true">Paid</option>
+                    </select>
+                    <span asp-validation-for="IsPaid" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DriverId" class="form-label">Assign Driver</label>
+                    <select asp-for="DriverId" class="form-select">
+                        @foreach (var driver in ViewBag.DriverList)
+                        {
+                            <option value="@driver.Value">@driver.Text</option>
+                        }
+                    </select>
+                    <span asp-validation-for="DriverId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ProofOfPaymentPath" class="form-label">Proof of Payment (PDF)</label>
+                <input asp-for="ProofOfPaymentPath" type="file" class="form-control" name="ProofFile" id="proofFile" />
+                <span asp-validation-for="ProofOfPaymentPath" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+     
+         
+            // Enable status dropdown when a new file is selected
+            $('#proofFile').on('change', function () {
+                if ($(this).val()) {
+                    $('#statusDropdown').prop('disabled', false);
+                } else {
+                    $('#statusDropdown').prop('disabled', true);
+                }
+            });
+        });
+    </script>
+}

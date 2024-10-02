@@ -1,44 +1,50 @@
 ﻿@model PagedResult<FleetManagementSystem.Models.Driver>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>License Number</th>
-            <th>Date of Birth</th>
-            <th>License Expiry</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var driver in Model.Items)
-        {
-            <tr>
-                <td>@driver.FirstName</td>
-                <td>@driver.LastName</td>
-                <td>@driver.LicenseNumber</td>
-                <td>@driver.DateOfBirth.ToShortDateString()</td>
-                <td>@driver.LicenseExpiry.ToShortDateString()</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@driver.Id" class="btn btn-info btn-sm">Details</a>
-                    <a asp-action="Edit" asp-route-id="@driver.Id" class="btn btn-warning btn-sm">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@driver.Id" class="btn btn-danger btn-sm">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<!-- Pagination Controls -->
-@if (Model.TotalPages > 1)
-{
-    <nav>
-        <ul class="pagination">
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
-}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Drivers Management</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>License Number</th>
+                        <th>Date of Birth</th>
+                        <th>License Expiry</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var driver in Model.Items)
+                    {
+                        <tr>
+                            <td>@driver.FirstName</td>
+                            <td>@driver.LastName</td>
+                            <td>@driver.LicenseNumber</td>
+                            <td>@driver.DateOfBirth.ToShortDateString()</td>
+                            <td>@driver.LicenseExpiry.ToShortDateString()</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@driver.Id" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@driver.Id" class="btn btn-sm btn-outline-warning">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@driver.Id" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @await Html.PartialAsync("_Pagination", Model)
+    </div>
+</div>

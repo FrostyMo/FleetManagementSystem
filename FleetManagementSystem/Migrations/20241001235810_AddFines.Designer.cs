@@ -3,6 +3,7 @@ using System;
 using FleetManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FleetManagementSystem.Migrations
 {
     [DbContext(typeof(FleetManagementDbContext))]
-    partial class FleetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241001235810_AddFines")]
+    partial class AddFines
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.33");
@@ -195,7 +197,7 @@ namespace FleetManagementSystem.Migrations
             modelBuilder.Entity("FleetManagementSystem.Models.Fine", b =>
                 {
                     b.HasOne("FleetManagementSystem.Models.Driver", "Driver")
-                        .WithMany("Fines")
+                        .WithMany()
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -232,11 +234,6 @@ namespace FleetManagementSystem.Migrations
                         .HasForeignKey("DriverId");
 
                     b.Navigation("Driver");
-                });
-
-            modelBuilder.Entity("FleetManagementSystem.Models.Driver", b =>
-                {
-                    b.Navigation("Fines");
                 });
 
             modelBuilder.Entity("FleetManagementSystem.Models.Vehicle", b =>

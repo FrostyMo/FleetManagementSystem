@@ -1,49 +1,69 @@
 ﻿@model FleetManagementSystem.Models.Driver
 
-<h2>Create Driver</h2>
-
-<form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="FirstName">First Name</label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+<div class="card shadow-sm">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Add Driver</h4>
     </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="FirstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Enter First Name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="LastName" class="control-label">Last Name<span class="text-danger">*</span></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+                <div class="col-md-6">
+                    <label asp-for="LastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Enter Last Name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="LicenseNumber" class="form-label">License Number<span class="text-danger">*</span></label>
+                    <input asp-for="LicenseNumber" class="form-control" placeholder="Enter License Number" />
+                    <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label">Phone Number<span class="text-danger">*</span></label>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone Number" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">Email<span class="text-danger">*</span></label>
+                    <input asp-for="Email" class="form-control" placeholder="Enter Email Address" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="DateOfBirth" class="form-label">Date of Birth<span class="text-danger">*</span></label>
+                    <input asp-for="DateOfBirth" class="form-control" type="date" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label asp-for="LicenseExpiry" class="form-label">License Expiry Date<span class="text-danger">*</span></label>
+                    <input asp-for="LicenseExpiry" class="form-control" type="date" />
+                    <span asp-validation-for="LicenseExpiry" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn table-header text-white">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="form-group">
-        <label asp-for="LicenseNumber" class="control-label">License Number<span class="text-danger">*</span></label>
-        <input asp-for="LicenseNumber" class="form-control" />
-        <span asp-validation-for="LicenseNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DateOfBirth"></label>
-        <input asp-for="DateOfBirth" class="form-control" type="date" />
-        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="LicenseExpiry"></label>
-        <input asp-for="LicenseExpiry" class="form-control" type="date" />
-        <span asp-validation-for="LicenseExpiry" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" class="form-control" />
-        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

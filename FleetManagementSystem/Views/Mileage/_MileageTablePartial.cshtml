@@ -1,54 +1,62 @@
 ﻿@model PagedResult<FleetManagementSystem.Models.Mileage>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Total Mileage</th>
-            <th>Vehicle</th>
-            <th>Proof</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var mileage in Model.Items)
-        {
-            <tr>
-                <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
-                <td>@mileage.TotalMileage</td>
-                <td>@mileage.Vehicle.LicensePlate</td>
-                <td>
-                    @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Mileage Records</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Total Mileage</th>
+                        <th>Vehicle</th>
+                        <th>Proof</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mileage in Model.Items)
                     {
-                        <span>Missing</span>
+                        <tr>
+                            <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
+                            <td>@mileage.TotalMileage</td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@mileage.Vehicle.Id" class="text-primary">
+                                    @mileage.Vehicle.LicensePlate
+                                    <i class="fas fa-external-link-alt"></i> <!-- External link icon -->
+                                </a>
+                            </td>
+                            <td>
+                                @if (string.IsNullOrEmpty(mileage.ProofFilePath))
+                                {
+                                    <span class="text-danger">Missing</span>
+                                }
+                                else
+                                {
+                                    <a href="@mileage.ProofFilePath" target="_blank" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-image"></i> View
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-sm btn-outline-warning" asp-action="Edit" asp-route-id="@mileage.Id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@mileage.Id">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <a href="@mileage.ProofFilePath" target="_blank">
-                            <i class="fas fa-image"></i> <!-- Image icon -->
-                        </a>
-                    }
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@mileage.Id">Edit</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@mileage.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
 
-<!-- Pagination Controls -->
-@if (Model.TotalPages > 1)
-{
-    <nav>
-        <ul class="pagination">
-            @for (var i = 1; i <= Model.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
-                </li>
-            }
-        </ul>
-    </nav>
-}
+        <!-- Pagination Controls -->
+        @await Html.PartialAsync("_Pagination", Model)
+    </div>
+</div>

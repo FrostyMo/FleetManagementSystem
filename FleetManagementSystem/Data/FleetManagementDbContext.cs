@@ -8,7 +8,7 @@ namespace FleetManagementSystem.Data
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         //public DbSet<FuelCard> FuelCards { get; set; }
-        //public DbSet<Fine> Fines { get; set; }
+        public DbSet<Fine> Fines { get; set; }
         //public DbSet<Insurance> Insurances { get; set; }
         public DbSet<ServiceHistory> ServiceHistories { get; set; }
         public DbSet<Mileage> Mileages { get; set; }

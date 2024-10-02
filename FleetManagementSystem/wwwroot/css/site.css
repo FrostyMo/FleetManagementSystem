@@ -52,3 +52,45 @@ label span.text-danger {
 .dropdown-toggle::after {
     display: none;
 }
+
+/* Modern pagination styling with smaller size */
+.pagination .page-link {
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.4rem 0.8rem; /* Smaller padding for smaller buttons */
+    color: #6c757d;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+    font-size: 0.85rem; /* Make font size smaller */
+}
+
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+        color: #495057;
+    }
+
+.pagination .page-item.active .page-link {
+    background-color: #1A6554 !important; /* Modern soft blue */
+    color: white !important;
+}
+
+.pagination .page-item.disabled .page-link {
+    background-color: #f8f9fa;
+    color: #ced4da;
+}
+
+.pagination .page-item {
+    margin: 0 2px; /* Smaller spacing between page buttons */
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.table-header {
+    background-color: #1A6554;
+    color: white;
+}
+.table-header-2 {
+    background-color: #1A7A54;
+}
