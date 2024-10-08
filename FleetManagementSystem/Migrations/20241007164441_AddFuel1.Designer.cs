@@ -3,6 +3,7 @@ using System;
 using FleetManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FleetManagementSystem.Migrations
 {
     [DbContext(typeof(FleetManagementDbContext))]
-    partial class FleetManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241007164441_AddFuel1")]
+    partial class AddFuel1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.33");
@@ -121,8 +123,8 @@ namespace FleetManagementSystem.Migrations
                     b.Property<int>("FuelCardId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Month")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTime>("MonthYear")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProofFilePath")
                         .HasColumnType("TEXT");
@@ -132,9 +134,6 @@ namespace FleetManagementSystem.Migrations
 
                     b.Property<decimal>("Usage")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Year")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 

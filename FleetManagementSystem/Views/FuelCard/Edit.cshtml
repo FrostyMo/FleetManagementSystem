@@ -1,0 +1,26 @@
+﻿@model FleetManagementSystem.Models.FuelCard
+
+<h1>Edit Fuel Card</h1>
+
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label asp-for="FuelCardNumber"></label>
+        <input asp-for="FuelCardNumber" class="form-control" />
+        <span asp-validation-for="FuelCardNumber" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Mileage"></label>
+        <input asp-for="Mileage" class="form-control" />
+        <span asp-validation-for="Mileage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DriverId" class="control-label">Assign to Driver</label>
+        <select asp-for="DriverId" class="form-control" asp-items="ViewBag.DriverList"></select>
+        <span asp-validation-for="DriverId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

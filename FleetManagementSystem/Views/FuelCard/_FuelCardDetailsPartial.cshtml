@@ -1,0 +1,68 @@
+﻿@model PagedResult<FleetManagementSystem.Models.FuelCardDetail>
+
+@if (Model != null && Model.Items.Any())
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header-2 text-white">
+            <h4 class="mb-0">Fuel Card Usage Details</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Usage (Liters)</th>
+                        <th>Month-Year</th>
+                        <th>Proof</th>
+                        <th>Remarks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detail in Model.Items)
+                    {
+                        <tr>
+                            <td>@detail.Usage</td>
+                            <td>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(detail.Month), @detail.Year</td>
+                            <td>
+                                @if (string.IsNullOrEmpty(detail.ProofFilePath))
+                                {
+                                    <span>No proof available</span>
+                                }
+                                else
+                                {
+                                    <a href="@detail.ProofFilePath" target="_blank" class="btn btn-sm btn-outline-info">
+                                        <i class="fas fa-file-archive"></i> View Proof
+                                    </a>
+                                }
+                            </td>
+                            <td>@detail.Remarks</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link dropdown-toggle" type="button" id="kebabMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="kebabMenu">
+                                        <li>
+                                            <a class="dropdown-item" asp-action="Edit" asp-controller="FuelCardDetail" asp-route-id="@detail.Id">Edit Detail</a>
+                                        </li>
+                                        <li>
+                                            <form method="post" asp-action="Delete" asp-controller="FuelCardDetail" asp-route-id="@detail.Id">
+                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @await Html.PartialAsync("_Pagination", Model)
+        </div>
+    </div>
+}
+else
+{
+    <p>No details available for this fuel card.</p>
+}

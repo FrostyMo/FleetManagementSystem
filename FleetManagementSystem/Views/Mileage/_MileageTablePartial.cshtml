@@ -23,10 +23,11 @@
                             <td>@mileage.Date.ToString("dd/MM/yyyy")</td>
                             <td>@mileage.TotalMileage</td>
                             <td>
+                                
                                 <a asp-action="Details" asp-controller="Vehicle" asp-route-id="@mileage.Vehicle.Id" class="text-primary">
-                                    @mileage.Vehicle.LicensePlate
                                     <i class="fas fa-external-link-alt"></i> <!-- External link icon -->
                                 </a>
+                                @mileage.Vehicle.LicensePlate
                             </td>
                             <td>
                                 @if (string.IsNullOrEmpty(mileage.ProofFilePath))
