@@ -26,6 +26,20 @@
                     <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</p>
                     <p><strong>License Expiry:</strong> @Model.LicenseExpiry.ToShortDateString()</p>
                     <p><strong>Email:</strong> @Model.Email</p>
+                    <p>
+                        <strong>Current Fuel Card:</strong>
+                        @if (Model.FuelCard != null)
+                        {
+                            <a asp-action="Details" asp-controller="FuelCard" asp-route-id="@Model.FuelCard.Id" class="text-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            @Model.FuelCard.FuelCardNumber
+                        }
+                        else
+                        {
+                            <span>No Fuel Card Assigned</span>
+                        }
+                    </p>
                 </div>
             </div>
         </div>

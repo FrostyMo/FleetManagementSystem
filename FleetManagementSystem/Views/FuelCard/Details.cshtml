@@ -1,0 +1,58 @@
+﻿
+@model FleetManagementSystem.Models.FuelCard
+
+@if (TempData["ErrorMessage"] != null)
+{
+<div class="alert alert-danger">
+    @TempData["ErrorMessage"]
+</div>
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Fuel Card Details</h2>
+
+    <!-- Fuel Card Information -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header text-white">
+            <h4 class="mb-0">Fuel Card Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Fuel Card Number:</strong> @Model.FuelCardNumber</p>
+                    <p><strong>Mileage:</strong> @Model.Mileage</p>
+                </div>
+                <div class="col-md-6">
+                    <p>
+                        <strong>Assigned Driver:</strong>
+                        @if (Model.Driver != null)
+                        {
+                            <a asp-action="Details" asp-controller="Driver" asp-route-id="@Model.Driver.Id" class="text-primary">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                            @Model.Driver.FirstName @Model.Driver.LastName
+                        }
+                        else
+                        {
+                            <span>Unassigned</span>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Detail Button -->
+    <div class="text-end mb-3">
+        <a class="btn btn-sm btn-outline-success" asp-action="Create" asp-controller="FuelCardDetail" asp-route-fuelCardId="@Model.Id">
+            <i class="fas fa-plus"></i> Add Detail
+        </a>
+    </div>
+
+    <!-- Fuel Card Details Table (Moved to Partial) -->
+    <partial name="_FuelCardDetailsPartial" model="ViewBag.FuelCardDetails" />
+
+    <div class="text-end mt-4">
+        <a href="@Url.Action("Index", "FuelCard" )" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

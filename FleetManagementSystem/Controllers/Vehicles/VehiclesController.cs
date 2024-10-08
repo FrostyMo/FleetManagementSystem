@@ -232,10 +232,20 @@ namespace FleetManagementSystem.Controllers
             var hasServiceHistories = await _context.ServiceHistories.AnyAsync(sh => sh.VehicleId == vehicle.Id);
             var hasMileages = await _context.Mileages.AnyAsync(m => m.VehicleId == vehicle.Id);
 
-            if (hasServiceHistories || hasMileages)
+            // Build the error message dynamically
+            var errorMessages = new List<string>();
+
+            if (hasServiceHistories)
             {
-                ViewBag.ErrorMessage = "This vehicle has associated service histories or mileages. Delete them before deleting the vehicle.";
+                errorMessages.Add("&#8627; This vehicle has associated service histories. Delete them before deleting the vehicle.");
             }
+            if (hasMileages)
+            {
+                errorMessages.Add("&#8627; This vehicle has associated milages. Delete them before deleting the vehicle.");
+            }
+
+            // Join error messages with <br> for line breaks in HTML
+            ViewBag.ErrorMessage = string.Join("<br>", errorMessages);
             return View(vehicle);
         }
 

@@ -1,0 +1,29 @@
+﻿@model PagedResult<FleetManagementSystem.Models.FuelCard>
+
+<h1>Fuel Cards</h1>
+
+<a class="btn table-header mb-3" asp-action="Create">Add New Fuel Card</a>
+
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Search by Fuel Card Number or Driver" />
+
+<div id="fuelCardTable">
+    <partial name="_FuelCardTablePartial" model="Model" />
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('input', function () {
+                var query = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("Search", "FuelCard")',
+                    type: 'GET',
+                    data: { searchString: query },
+                    success: function (result) {
+                        $('#fuelCardTable').html(result);
+                    }
+                });
+            });
+        });
+    </script>
+}

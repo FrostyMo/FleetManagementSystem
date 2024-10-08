@@ -1,0 +1,58 @@
+﻿@model PagedResult<FleetManagementSystem.Models.FuelCard>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header table-header text-white">
+        <h4 class="mb-0">Fuel Cards Management</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Fuel Card Number</th>
+                        <th>Mileage</th>
+                        <th>Assigned Driver</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fuelCard in Model.Items)
+                    {
+                        <tr>
+                            <td>@fuelCard.FuelCardNumber</td>
+                            <td>@fuelCard.Mileage</td>
+                            <td>
+                                @if (fuelCard.Driver != null)
+                                {
+                                    <a asp-action="Details" asp-controller="Driver" asp-route-id="@fuelCard.Driver.Id" class="text-primary">
+                                        <i class="fas fa-external-link-alt"></i> <!-- External link icon -->
+                                    </a>
+                                    @fuelCard.Driver.FirstName @fuelCard.Driver.LastName
+                                }
+                                else
+                                {
+                                    <span>Unassigned</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@fuelCard.Id">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@fuelCard.Id">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                    <a class="btn btn-sm btn-outline-success" asp-action="Details" asp-controller="FuelCard" asp-route-id="@fuelCard.Id">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @await Html.PartialAsync("_Pagination", Model)
+    </div>
+</div>

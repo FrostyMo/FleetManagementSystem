@@ -1,4 +1,6 @@
-﻿namespace FleetManagementSystem.Models
+﻿using System.Text.Json.Serialization;
+
+namespace FleetManagementSystem.Models
 {
     public class Driver
     {
@@ -13,5 +15,8 @@
 
         // Navigation property for the assigned driver
         public ICollection<Fine>? Fines { get; set; } // Add this line
+
+        [JsonIgnore]
+        public virtual FuelCard? FuelCard { get; set; }
     }
 }

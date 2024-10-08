@@ -18,7 +18,7 @@ namespace FleetManagementSystem.Controllers
         }
 
         // GET: Driver/Index
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 1)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
             var drivers = _context.Drivers.AsQueryable();
             var paginatedResult = await drivers.GetPagedAsync(page, pageSize);
@@ -85,7 +85,7 @@ namespace FleetManagementSystem.Controllers
         // POST: Driver/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,LicenseNumber,DateOfBirth,LicenseExpiry,PhoneNumber,Email")] Driver driver)
+        public async Task<IActionResult> Edit(int id, Driver driver)
         {
             if (id != driver.Id)
             {
@@ -124,6 +124,7 @@ namespace FleetManagementSystem.Controllers
             }
 
             var driver = await _context.Drivers
+                .Include(d => d.FuelCard) // Include FuelCard details
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (driver == null)
@@ -161,11 +162,23 @@ namespace FleetManagementSystem.Controllers
 
             // Check if the driver has any associated fines
             var hasFines = await _context.Fines.AnyAsync(f => f.DriverId == driver.Id);
+            // Check if the driver has any associated fines
+            var hasFuelCards = await _context.FuelCards.AnyAsync(f => f.DriverId == driver.Id);
+
+            // Build the error message dynamically
+            var errorMessages = new List<string>();
 
             if (hasFines)
             {
-                ViewBag.ErrorMessage = "This driver has fines associated with them. You must delete the fines before deleting the driver.";
+                errorMessages.Add("&#8627; This driver has fines associated with them. You must delete the fines before deleting the driver.");
             }
+            if (hasFuelCards)
+            {
+                errorMessages.Add("&#8627; This driver has fuel cards associated with them. You must delete them before deleting the driver.");
+            }
+
+            // Join error messages with <br> for line breaks in HTML
+            ViewBag.ErrorMessage = string.Join("<br>", errorMessages);
 
             return View(driver);
         }

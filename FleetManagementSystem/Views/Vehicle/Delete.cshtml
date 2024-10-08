@@ -11,7 +11,7 @@
 {
     <div class="alert alert-danger">
         <h5 class="alert-heading">Cannot Delete Vehicle</h5>
-        <p>@ViewBag.ErrorMessage</p>
+        @Html.Raw(ViewBag.ErrorMessage)
     </div>
 }
 else
