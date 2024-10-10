@@ -1,0 +1,132 @@
+﻿@model FleetManagementSystem.Models.Insurance
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Insurance Policy Details</h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header text-white">
+            <h4 class="mb-0">Insurance Information</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Policy Number:</strong> @Model.PolicyNumber</p>
+                    <p><strong>Company:</strong> @Model.Company</p>
+                    <p><strong>Type:</strong> @Model.Type</p>
+                    <p><strong>Coverage Amount:</strong> @Model.CoverageAmount</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Premium:</strong> @Model.Premium</p>
+                    <p><strong>Start Date:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
+                    <p><strong>End Date:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
+                    <p>
+                        <strong>Policy Documents:</strong>
+                        @if (string.IsNullOrEmpty(Model.PolicyDocuments))
+                        {
+                            <span class="text-danger">No document uploaded</span>
+                        }
+                        else
+                        {
+                            <a href="@Model.PolicyDocuments" target="_blank" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-file-pdf"></i> View Document
+                            </a>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drivers Covered by Insurance -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header-2 text-white">
+            <h4 class="mb-0">Covered Drivers</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Drivers != null && Model.Drivers.Any())
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>License Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var driver in Model.Drivers)
+                        {
+                            <tr>
+                                <td>@driver.FirstName</td>
+                                <td>@driver.LastName</td>
+                                <td>@driver.LicenseNumber</td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-controller="Driver" asp-route-id="@driver.Id">
+                                        <i class="fas fa-info-circle"></i> View Driver
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No drivers are covered under this insurance policy.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Vehicles Covered by Insurance -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header table-header-2 text-white">
+            <h4 class="mb-0">Covered Vehicles</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Vehicles != null && Model.Vehicles.Any())
+            {
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>License Plate</th>
+                            <th>Manufacturer</th>
+                            <th>Model</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            <tr>
+                                <td>@vehicle.LicensePlate</td>
+                                <td>@vehicle.Manufacturer</td>
+                                <td>@vehicle.Model</td>
+                                <td>
+                                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-controller="Vehicle" asp-route-id="@vehicle.Id">
+                                        <i class="fas fa-info-circle"></i> View Vehicle
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No vehicles are covered under this insurance policy.</p>
+            }
+        </div>
+    </div>
+
+    <div class="text-end">
+        <a href="@Url.Action("Index", "Insurance")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

@@ -16,7 +16,7 @@ namespace FleetManagementSystem.Data
         public DbSet<FuelCard> FuelCards { get; set; }
         public DbSet<FuelCardDetail> FuelCardDetails { get; set; }
 
-        //public DbSet<Insurance> Insurances { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
         public FleetManagementDbContext(DbContextOptions<FleetManagementDbContext> options)
             : base(options)
         {

@@ -1,0 +1,47 @@
+﻿@model PagedResult<FleetManagementSystem.Models.Insurance>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Policy Number</th>
+                <th>Company</th>
+                <th>Type</th>
+                <th>Coverage Amount</th>
+                <th>Premium</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var insurance in Model.Items)
+            {
+                <tr>
+                    <td>@insurance.PolicyNumber</td>
+                    <td>@insurance.Company</td>
+                    <td>@insurance.Type</td>
+                    <td>£@insurance.CoverageAmount</td>
+                    <td>£@insurance.Premium</td>
+                    <td>@insurance.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@insurance.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@insurance.Id">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@insurance.Id">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
+                            <a asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-sm btn-outline-info">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @await Html.PartialAsync("_Pagination", Model)
+</div>
