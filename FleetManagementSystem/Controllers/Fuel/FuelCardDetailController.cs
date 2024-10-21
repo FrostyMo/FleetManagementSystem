@@ -81,7 +81,9 @@ namespace FleetManagementSystem.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var fuelCardDetail = _context.FuelCardDetails.Find(id);
+            var fuelCardDetail = _context.FuelCardDetails
+                                 .Include(f => f.FuelCard)
+                                 .FirstOrDefault(f => f.Id == id);
             if (fuelCardDetail == null) return NotFound();
 
             return View(fuelCardDetail);
@@ -96,7 +98,9 @@ namespace FleetManagementSystem.Controllers
             {
                 return NotFound();
             }
-            var existingDetail = await _context.FuelCardDetails.FindAsync(id);
+            var existingDetail = await _context.FuelCardDetails
+                                       .Include(f => f.FuelCard)
+                                       .FirstOrDefaultAsync(f => f.Id == id);
             if (existingDetail == null)
             {
                 return NotFound();
@@ -144,7 +148,7 @@ namespace FleetManagementSystem.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "FuelCard", new {id});
+                return RedirectToAction("Details", "FuelCard", new { id = existingDetail.FuelCardId });
             }
             return View(fuelCardDetail);
         }

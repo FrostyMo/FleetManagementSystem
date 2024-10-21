@@ -37,7 +37,7 @@ namespace FleetManagementSystem.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 searchString = searchString.ToLower();
-                mileages = mileages.Where(v => v.TotalMileage.ToLower().StartsWith(searchString) ||
+                mileages = mileages.Where(v => v.TotalMileage.ToString().ToLower().StartsWith(searchString) ||
                                                 v.Vehicle.LicensePlate.ToLower().StartsWith(searchString)
                                                 );
             }

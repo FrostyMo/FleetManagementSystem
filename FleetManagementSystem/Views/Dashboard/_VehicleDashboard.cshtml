@@ -1,0 +1,53 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.VehicleDashboardViewModel>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Vehicle Reg</th>
+                <th>Make</th>
+                <th>Driver Assigned</th>
+                <th>Fuel Used</th>
+                <th>Mileage</th>
+                <th>Services Cost</th>
+                <th>Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var vehicle in Model)
+            {
+                <tr>
+                    <td>@vehicle.VehicleReg</td>
+                    <td>@vehicle.VehicleMake</td>
+                    <td>@vehicle.DriverAssigned</td>
+                    <td>@vehicle.FuelUsedPerMonthByDriver L</td>
+                    <td>@vehicle.MileagePerMonth km</td>
+                    <td>@vehicle.ServicesCostPerMonth £</td>
+                    <td>@vehicle.TotalCostPerMonth £</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.VehicleTotalPages > 1)
+{
+    <div class="pagination-container mt-3">
+        <nav aria-label="Vehicle page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.VehicleCurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="javascript:void(0)" onclick="loadVehicleDashboard({ page: @(ViewBag.VehicleCurrentPage - 1) })">Previous</a>
+                </li>
+                @for (var i = 1; i <= ViewBag.VehicleTotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.VehicleCurrentPage ? "active" : "")">
+                        <a class="page-link" href="javascript:void(0)" onclick="loadVehicleDashboard({ page: @i })">@i</a>
+                    </li>
+                }
+                <li class="page-item @(ViewBag.VehicleCurrentPage == ViewBag.VehicleTotalPages ? "disabled" : "")">
+                    <a class="page-link" href="javascript:void(0)" onclick="loadVehicleDashboard({ page: @(ViewBag.VehicleCurrentPage + 1) })">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

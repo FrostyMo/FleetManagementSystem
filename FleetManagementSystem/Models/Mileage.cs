@@ -6,7 +6,7 @@ namespace FleetManagementSystem.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public string? TotalMileage { get; set; }
+        public double? TotalMileage { get; set; }
         public string? ProofFilePath { get; set; } // Path to the uploaded image or missing text
         public int VehicleId { get; set; }
         [JsonIgnore]
