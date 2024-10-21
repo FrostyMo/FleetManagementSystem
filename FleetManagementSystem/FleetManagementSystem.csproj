@@ -23,6 +23,8 @@
     <None Remove="Views\Fine\" />
     <None Remove="Views\FuelCard\" />
     <None Remove="Views\FuelCardDetail\" />
+    <None Remove="Views\Dashboard\" />
+    <None Remove="Models\DashboardModels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Drivers\" />
@@ -42,6 +44,8 @@
     <Folder Include="Views\Fine\" />
     <Folder Include="Views\FuelCard\" />
     <Folder Include="Views\FuelCardDetail\" />
+    <Folder Include="Views\Dashboard\" />
+    <Folder Include="Models\DashboardModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Views\Insurance %28copy%29\Index.cshtml" />

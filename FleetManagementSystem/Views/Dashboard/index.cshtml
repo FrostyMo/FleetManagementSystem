@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4">Fleet Dashboard</h1>
+    <p class="lead">Overview of Fleet Management, Driver Insights, and Vehicle Stats</p>
+
+    <!-- Summary Cards -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5>Top Fines</h5>
+                </div>
+                <div class="card-body">
+                    <h3>£@ViewBag.TotalFines</h3>
+                    <h6>Top 3 Drivers with Most Fines:</h6>
+                    <ul>
+                        @foreach (var driver in ViewBag.TopDriversWithFines)
+                        {
+                            <li>@driver.DriverName - £@driver.TotalFines</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5>Total Fuel Usage</h5>
+                </div>
+                <div class="card-body">
+                    <h3>@ViewBag.TotalFuelUsage L</h3>
+                    <h6>Top 3 Drivers by Fuel Usage:</h6>
+                    <ul>
+                        @foreach (var vehicle in ViewBag.TopVehiclesByFuelUsage)
+                        {
+                            <li>@vehicle.Driver - @vehicle.FuelUsed L</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-white">
+                    <h5>Insurances expiring soon</h5>
+                </div>
+                <div class="card-body">
+                    <h3>@ViewBag.InsurancesExpiring</h3>
+                    <ul>
+                        @foreach (var insurance in ViewBag.UpcomingInsurances)
+                        {
+                            <li>
+                                Policy: @insurance.Policy
+                                - Expiring on @insurance.ExpiryDate?.ToString("dd MMM yyyy")
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Vehicle Dashboard -->
+    <div class="mt-5">
+        <h3>Vehicle Dashboard</h3>
+
+        <!-- Monthly / Yearly Filter -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <input type="hidden" id="vehicle-filter-type" value="@(!string.IsNullOrEmpty(ViewBag.VehicleFilterType) ? ViewBag.VehicleFilterType : "month")" />
+            <div>
+                <span class="filter-option" onclick="applyFilter('vehicle', 'month')" id="vehicle-monthly" style="cursor:pointer;">
+                    Monthly
+                </span> |
+                <span class="filter-option" onclick="applyFilter('vehicle', 'year')" id="vehicle-yearly" style="cursor:pointer;">
+                    Yearly
+                </span>
+            </div>
+            <div id="vehicle-date-navigation">
+                <a href="javascript:void(0)" onclick="navigate('vehicle', 'prev')" id="prev-vehicle-navigation">Prev</a> -
+                <span id="current-vehicle-date"></span> -
+                <a href="javascript:void(0)" onclick="navigate('vehicle', 'next')" id="next-vehicle-navigation">Next</a>
+            </div>
+        </div>
+
+        <div id="vehicle-dashboard-container">
+            @await Html.PartialAsync("_VehicleDashboard", (IEnumerable<VehicleDashboardViewModel>)ViewBag.VehicleDashboard)
+        </div>
+    </div>
+
+    <!-- Driver Dashboard -->
+    <div class="mt-5">
+        <h3>Driver Dashboard</h3>
+
+        <!-- Monthly / Yearly Filter -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <input type="hidden" id="driver-filter-type" value="@(!string.IsNullOrEmpty(ViewBag.DriverFilterType) ? ViewBag.DriverFilterType : "month")" />
+            <div>
+                <span class="filter-option" onclick="applyFilter('driver', 'month')" id="driver-monthly" style="cursor:pointer;">
+                    Monthly
+                </span> |
+                <span class="filter-option" onclick="applyFilter('driver', 'year')" id="driver-yearly" style="cursor:pointer;">
+                    Yearly
+                </span>
+            </div>
+            <div id="driver-date-navigation">
+                <a href="javascript:void(0)" onclick="navigate('driver', 'prev')" id="prev-driver-navigation">Prev</a> -
+                <span id="current-driver-date"></span> -
+                <a href="javascript:void(0)" onclick="navigate('driver', 'next')" id="next-driver-navigation">Next</a>
+            </div>
+        </div>
+
+        <div id="driver-dashboard-container">
+            @await Html.PartialAsync("_DriverDashboard", (IEnumerable<DriverDashboardViewModel>)ViewBag.DriverDashboard)
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Apply the monthly filter by default on page load if no filter is set
+            const vehicleFilter = document.getElementById('vehicle-filter-type').value || 'month';
+            const driverFilter = document.getElementById('driver-filter-type').value || 'month';
+
+            // Set the default filter type and update the UI accordingly
+            document.getElementById('vehicle-filter-type').value = vehicleFilter;
+            document.getElementById('driver-filter-type').value = driverFilter;
+
+            // Load the dashboards with the default filters
+            loadVehicleDashboard();
+            loadDriverDashboard();
+
+            // Update filter selection visuals
+            updateFilterSelection('vehicle', vehicleFilter);
+            updateFilterSelection('driver', driverFilter);
+
+            // Ensure date navigation is updated for both dashboards
+            updateDateNavigation('vehicle');
+            updateDateNavigation('driver');
+        });
+    </script>
+}

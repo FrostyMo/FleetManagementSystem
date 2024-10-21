@@ -1,0 +1,47 @@
+﻿@model IEnumerable<FleetManagementSystem.Models.DriverDashboardViewModel>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Driver Name</th>
+                <th>Fuel Used</th>
+                <th>Total Fines</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var driver in Model)
+            {
+                <tr>
+                    <td>@driver.DriverName</td>
+                    <td>@driver.FuelUsedPerMonth L</td>
+                    <td>@driver.TotalSpentOnFines £</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.DriverTotalPages > 1)
+{
+    <div class="pagination-container mt-3">
+        <nav aria-label="Driver page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(ViewBag.DriverCurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="javascript:void(0)" onclick="loadDriverDashboard({ page: @(ViewBag.DriverCurrentPage - 1) })">Previous</a>
+                </li>
+                @for (var i = 1; i <= ViewBag.DriverTotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.DriverCurrentPage ? "active" : "")">
+                        <a class="page-link" href="javascript:void(0)" onclick="loadDriverDashboard({ page: @i })">@i</a>
+                    </li>
+                }
+                <li class="page-item @(ViewBag.DriverCurrentPage == ViewBag.DriverTotalPages ? "disabled" : "")">
+                    <a class="page-link" href="javascript:void(0)" onclick="loadDriverDashboard({ page: @(ViewBag.DriverCurrentPage + 1) })">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
+
+
