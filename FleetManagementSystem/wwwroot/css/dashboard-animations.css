@@ -1,0 +1,104 @@
+﻿/* Custom CSS for Dashboard Animations and Styling */
+
+/* General fade-in animation for various elements */
+.fade-in-title {
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.fade-in-subtitle {
+    animation: fadeIn 2s ease-in-out;
+}
+
+.fade-in-card {
+    animation: fadeIn 1.5s ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+.fade-in-section {
+    animation: fadeIn 2s ease-in-out;
+    transition: transform 0.3s ease;
+}
+
+/* Adding hover effect to cards for interactivity */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Define keyframes for the fade-in effect */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Filter and navigation button styling */
+.filter-option {
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+    .filter-option:hover {
+        color: #007bff;
+    }
+
+/* Date navigation buttons styling */
+.btn-outline-secondary {
+    border-radius: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: #e9ecef;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+/* Custom styling for navigation text */
+#current-vehicle-date, #current-driver-date {
+    font-size: 1.2rem;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+/* Highlighted filter option styling */
+.filter-option.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Smooth transition for visibility changes */
+.fade-in-section {
+    opacity: 0;
+    animation: fadeInSection 1.5s forwards;
+}
+
+@keyframes fadeInSection {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Additional CSS for smoothness */
+.card-header {
+    transition: background-color 0.3s ease;
+}
+
+    .card-header:hover {
+        background-color: #0056b3;
+    }
+
+/* Styling for summary cards to make them pop */
+#card-top-fines, #card-fuel-usage, #card-insurance-expiring {
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+    #card-top-fines:hover, #card-fuel-usage:hover, #card-insurance-expiring:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
