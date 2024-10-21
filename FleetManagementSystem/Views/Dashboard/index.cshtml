@@ -2,60 +2,60 @@
     ViewData["Title"] = "Dashboard";
 }
 
+<!-- Adding custom CSS for animations and styling -->
+<link rel="stylesheet" href="~/css/dashboard-animations.css">
+
 <div class="container mt-4">
-    <h1 class="display-4">Fleet Dashboard</h1>
-    <p class="lead">Overview of Fleet Management, Driver Insights, and Vehicle Stats</p>
+    <h1 class="display-4 text-center mb-4 fade-in-title">Fleet Dashboard</h1>
+    <p class="lead text-center mb-5 fade-in-subtitle">Overview of Fleet Management, Driver Insights, and Vehicle Stats</p>
 
     <!-- Summary Cards -->
     <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 fade-in-card" id="card-top-fines">
+                <div class="card-header bg-primary text-white text-center">
                     <h5>Top Fines</h5>
                 </div>
-                <div class="card-body">
-                    <h3>£@ViewBag.TotalFines</h3>
-                    <h6>Top 3 Drivers with Most Fines:</h6>
-                    <ul>
+                <div class="card-body text-center">
+                    <h3 class="text-primary mb-3">£@ViewBag.TotalFines</h3>
+                    <h6 class="text-muted">Top 3 Drivers with Most Fines:</h6>
+                    <ul class="list-unstyled mt-3">
                         @foreach (var driver in ViewBag.TopDriversWithFines)
                         {
-                            <li>@driver.DriverName - £@driver.TotalFines</li>
+                            <li class="text-dark">@driver.DriverName - <strong>£@driver.TotalFines</strong></li>
                         }
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 fade-in-card" id="card-fuel-usage">
+                <div class="card-header bg-success text-white text-center">
                     <h5>Total Fuel Usage</h5>
                 </div>
-                <div class="card-body">
-                    <h3>@ViewBag.TotalFuelUsage L</h3>
-                    <h6>Top 3 Drivers by Fuel Usage:</h6>
-                    <ul>
+                <div class="card-body text-center">
+                    <h3 class="text-success mb-3">@ViewBag.TotalFuelUsage L</h3>
+                    <h6 class="text-muted">Top 3 Drivers by Fuel Usage:</h6>
+                    <ul class="list-unstyled mt-3">
                         @foreach (var vehicle in ViewBag.TopVehiclesByFuelUsage)
                         {
-                            <li>@vehicle.Driver - @vehicle.FuelUsed L</li>
+                            <li class="text-dark">@vehicle.Driver - <strong>@vehicle.FuelUsed L</strong></li>
                         }
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-white">
-                    <h5>Insurances expiring soon</h5>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0 fade-in-card" id="card-insurance-expiring">
+                <div class="card-header bg-warning text-white text-center">
+                    <h5>Insurances Expiring Soon</h5>
                 </div>
-                <div class="card-body">
-                    <h3>@ViewBag.InsurancesExpiring</h3>
-                    <ul>
+                <div class="card-body text-center">
+                    <h3 class="text-warning mb-3">@ViewBag.InsurancesExpiring</h3>
+                    <ul class="list-unstyled mt-3">
                         @foreach (var insurance in ViewBag.UpcomingInsurances)
                         {
-                            <li>
-                                Policy: @insurance.Policy
-                                - Expiring on @insurance.ExpiryDate?.ToString("dd MMM yyyy")
-                            </li>
+                            <li class="text-dark">Policy: @insurance.Policy - Expiring on <strong>@insurance.ExpiryDate?.ToString("dd MMM yyyy")</strong></li>
                         }
                     </ul>
                 </div>
@@ -63,56 +63,51 @@
         </div>
     </div>
 
-
     <!-- Vehicle Dashboard -->
-    <div class="mt-5">
-        <h3>Vehicle Dashboard</h3>
-
-        <!-- Monthly / Yearly Filter -->
+    <div class="mt-5 fade-in-section" id="vehicle-dashboard-section">
         <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Vehicle Dashboard</h3>
+            <!-- Monthly / Yearly Filter -->
             <input type="hidden" id="vehicle-filter-type" value="@(!string.IsNullOrEmpty(ViewBag.VehicleFilterType) ? ViewBag.VehicleFilterType : "month")" />
-            <div>
-                <span class="filter-option" onclick="applyFilter('vehicle', 'month')" id="vehicle-monthly" style="cursor:pointer;">
+            <div class="d-flex align-items-center">
+                <span class="filter-option me-3" onclick="applyFilter('vehicle', 'month')" id="vehicle-monthly" style="cursor:pointer; font-weight: bold;">
                     Monthly
-                </span> |
-                <span class="filter-option" onclick="applyFilter('vehicle', 'year')" id="vehicle-yearly" style="cursor:pointer;">
+                </span>
+                <span class="filter-option" onclick="applyFilter('vehicle', 'year')" id="vehicle-yearly" style="cursor:pointer; font-weight: bold;">
                     Yearly
                 </span>
             </div>
-            <div id="vehicle-date-navigation">
-                <a href="javascript:void(0)" onclick="navigate('vehicle', 'prev')" id="prev-vehicle-navigation">Prev</a> -
-                <span id="current-vehicle-date"></span> -
-                <a href="javascript:void(0)" onclick="navigate('vehicle', 'next')" id="next-vehicle-navigation">Next</a>
-            </div>
         </div>
-
+        <div id="vehicle-date-navigation" class="d-flex justify-content-center align-items-center mb-4">
+            <a href="javascript:void(0)" onclick="navigate('vehicle', 'prev')" id="prev-vehicle-navigation" class="btn btn-outline-secondary btn-sm me-3">Prev</a>
+            <span id="current-vehicle-date" class="text-dark fw-bold"></span>
+            <a href="javascript:void(0)" onclick="navigate('vehicle', 'next')" id="next-vehicle-navigation" class="btn btn-outline-secondary btn-sm ms-3">Next</a>
+        </div>
         <div id="vehicle-dashboard-container">
             @await Html.PartialAsync("_VehicleDashboard", (IEnumerable<VehicleDashboardViewModel>)ViewBag.VehicleDashboard)
         </div>
     </div>
 
     <!-- Driver Dashboard -->
-    <div class="mt-5">
-        <h3>Driver Dashboard</h3>
-
-        <!-- Monthly / Yearly Filter -->
+    <div class="mt-5 fade-in-section" id="driver-dashboard-section">
         <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Driver Dashboard</h3>
+            <!-- Monthly / Yearly Filter -->
             <input type="hidden" id="driver-filter-type" value="@(!string.IsNullOrEmpty(ViewBag.DriverFilterType) ? ViewBag.DriverFilterType : "month")" />
-            <div>
-                <span class="filter-option" onclick="applyFilter('driver', 'month')" id="driver-monthly" style="cursor:pointer;">
+            <div class="d-flex align-items-center">
+                <span class="filter-option me-3" onclick="applyFilter('driver', 'month')" id="driver-monthly" style="cursor:pointer; font-weight: bold;">
                     Monthly
-                </span> |
-                <span class="filter-option" onclick="applyFilter('driver', 'year')" id="driver-yearly" style="cursor:pointer;">
+                </span>
+                <span class="filter-option" onclick="applyFilter('driver', 'year')" id="driver-yearly" style="cursor:pointer; font-weight: bold;">
                     Yearly
                 </span>
             </div>
-            <div id="driver-date-navigation">
-                <a href="javascript:void(0)" onclick="navigate('driver', 'prev')" id="prev-driver-navigation">Prev</a> -
-                <span id="current-driver-date"></span> -
-                <a href="javascript:void(0)" onclick="navigate('driver', 'next')" id="next-driver-navigation">Next</a>
-            </div>
         </div>
-
+        <div id="driver-date-navigation" class="d-flex justify-content-center align-items-center mb-4">
+            <a href="javascript:void(0)" onclick="navigate('driver', 'prev')" id="prev-driver-navigation" class="btn btn-outline-secondary btn-sm me-3">Prev</a>
+            <span id="current-driver-date" class="text-dark fw-bold"></span>
+            <a href="javascript:void(0)" onclick="navigate('driver', 'next')" id="next-driver-navigation" class="btn btn-outline-secondary btn-sm ms-3">Next</a>
+        </div>
         <div id="driver-dashboard-container">
             @await Html.PartialAsync("_DriverDashboard", (IEnumerable<DriverDashboardViewModel>)ViewBag.DriverDashboard)
         </div>
@@ -120,8 +115,7 @@
 </div>
 
 @section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+    <script>document.addEventListener("DOMContentLoaded", function () {
             // Apply the monthly filter by default on page load if no filter is set
             const vehicleFilter = document.getElementById('vehicle-filter-type').value || 'month';
             const driverFilter = document.getElementById('driver-filter-type').value || 'month';
@@ -141,6 +135,5 @@
             // Ensure date navigation is updated for both dashboards
             updateDateNavigation('vehicle');
             updateDateNavigation('driver');
-        });
-    </script>
+        });</script>
 }

@@ -45,32 +45,6 @@
         background-color: rgb(246, 214, 201, 0.8); /* Example similar color */
     }
     
-
-/*.card-link .card-body {*/
-/* Fading colors by reducing opacity */
-/*background-color: rgba(13, 110, 253, 0.8);*/ /* Primary */
-/*}
-
-.card-link .card-body.bg-success {
-background-color: rgba(25, 135, 84, 0.8);*/ /* Success */
-/*}
-
-.card-link .card-body.bg-info {
-background-color: rgba(13, 202, 240, 0.8);*/ /* Info */
-/*}
-
-.card-link .card-body.bg-warning {
-background-color: rgba(255, 193, 7, 0.8);*/ /* Warning */
-/*}
-
-.card-link .card-body.bg-danger {
-background-color: rgba(220, 53, 69, 0.8);*/ /* Danger */
-/*}
-
-.card-link .card-body.bg-secondary {
-background-color: rgba(108, 117, 125, 0.8);*/ /* Secondary */
-/*}*/
-
 /* Hover effect */
     .card-link:hover {
         transform: scale(1.05); /* Slight increase on hover */

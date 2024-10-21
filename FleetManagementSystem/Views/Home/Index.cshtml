@@ -5,13 +5,13 @@
     <link rel="stylesheet" href="~/css/home.css" />
 </head>
 <div class="container mt-4">
-    <h1 class="display-4 text-center">Fleet Management System</h1>
-    <p class="lead text-center">Manage your fleet efficiently with the following modules:</p>
+    <h1 class="display-4 text-center fade-in-title">Fleet Management System</h1>
+    <p class="lead text-center fade-in-subtitle">Manage your fleet efficiently with the following modules:</p>
 
     <div class="row mt-5">
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Driver")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Driver")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-1 text-dark">
                         <h5 class="card-title">Drivers</h5>
                         <p class="card-text">Manage your drivers: Add, update, or remove driver information.</p>
@@ -20,9 +20,9 @@
             </a>
         </div>
 
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Vehicle")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Vehicle")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-2 text-dark">
                         <h5 class="card-title">Vehicles</h5>
                         <p class="card-text">Track vehicle details and service history.</p>
@@ -31,9 +31,9 @@
             </a>
         </div>
 
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "FuelCard")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "FuelCard")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-3 text-dark">
                         <h5 class="card-title">Fuel Cards</h5>
                         <p class="card-text">Manage your fleet's fuel cards.</p>
@@ -44,9 +44,9 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Fine")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Fine")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-4 text-dark">
                         <h5 class="card-title">Fines</h5>
                         <p class="card-text">Track and manage vehicle fines.</p>
@@ -55,9 +55,9 @@
             </a>
         </div>
 
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "ServiceHistory")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "ServiceHistory")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-5 text-dark">
                         <h5 class="card-title">Service History</h5>
                         <p class="card-text">Monitor service history of your vehicles.</p>
@@ -66,9 +66,9 @@
             </a>
         </div>
 
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Insurance")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Insurance")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-6 text-dark">
                         <h5 class="card-title">Insurance</h5>
                         <p class="card-text">Manage insurance information for vehicles.</p>
@@ -77,10 +77,11 @@
             </a>
         </div>
     </div>
+    
     <div class="row mt-4">
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Mileage")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Mileage")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-7 text-dark">
                         <h5 class="card-title">Mileage</h5>
                         <p class="card-text">Monitor mileage of your vehicles.</p>
@@ -88,9 +89,9 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-4">
-            <a href="@Url.Action("Index", "Dashboard")" class="card-link">
-                <div class="card shadow-sm">
+        <div class="col-md-4 mb-4 d-flex">
+            <a href="@Url.Action("Index", "Dashboard")" class="card-link w-100">
+                <div class="card shadow-sm fade-in-card h-100">
                     <div class="card-body card-body-color-8 text-dark">
                         <h5 class="card-title">Reports & Analytics</h5>
                         <p class="card-text">View fleet reports and analytics (Fines, Fuel Usage, Insurance).</p>
@@ -98,5 +99,17 @@
                 </div>
             </a>
         </div>
+        <!-- Additional blank card for alignment if required -->
+        <div class="col-md-4 mb-4 d-flex align-items-center justify-content-center">
+            <div class="card shadow-sm h-100 border-0 text-center d-flex justify-content-center align-items-center">
+                <div class="card-body text-muted">
+                    <h5 class="card-title">More Features Coming Soon...</h5>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/scripts/home.js"></script>
+}
